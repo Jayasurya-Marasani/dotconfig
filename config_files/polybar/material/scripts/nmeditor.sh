@@ -1,0 +1,1 @@
+exec nm-connection-editor &

@@ -1,0 +1,1502 @@
+Script started on 2023-01-16 04:17:28+05:30 [TERM="alacritty" TTY="/dev/pts/1" COLUMNS="69" LINES="43"]
+[?2004h[jayasurya@JayasuryaMarasani material]$ cd scripts/
+[?2004l[?2004h[jayasurya@JayasuryaMarasani scripts]$ ls
+[?2004l[0m[01;32mbts[0m             [01;32mcolors-light.sh[0m  [01;32mpowermenu.sh[0m  [01;34mrofi[0m
+[01;32mcheckupdates[0m    [01;32mcolor-switch.sh[0m  [01;32mpywal.sh[0m      [01;32mrofi-wifi-menu.sh[0m
+[01;32mcolors-dark.sh[0m  [01;32mlauncher.sh[0m      [01;32mrandom.sh[0m     [01;32mupdates.sh[0m
+[?2004h[jayasurya@JayasuryaMarasani scripts]$ cd[K[Knvm[Kim updates.sh 
+[?2004l[?1049h[22;0;0t[22;0t[?1h=[H[2J]11;?[?2004h[?u[c[?25h[?25l(B[m[H[2J[>4;2m[96m#!/usr/bin/env bash(B[m[K
+[K
+(B[0;1m[96mNOTIFY_ICON(B[m=/usr/share/icons/Papirus/32x32/apps/system-software-update.svg[K
+[K
+(B[0;1m[96mget_total_updates() {(B[m (B[0;1m[96mUPDATES(B[m=[38;5;81m$((B[m[38;5;224m~/.config/polybar/material/scripts/checkupdates (B[m[95m2(B[m[93m>(B[m[38;5;224m/dev/null (B[m[93m|(B[m[38;5;224m wc -l(B[m[38;5;81m)(B[m[93m;(B[m (B[0;1m[96m}(B[m[K
+[K
+[93mwhile true; do(B[m[K
+    get_total_updates[K
+[K
+    [96m# notify user of updates(B[m[K
+    [93mif hash(B[m notify-send [93m&>(B[m/dev/null[93m;(B[m [93mthen(B[m[K
+        [93mif (B[m[38;5;224m(((B[m UPDATES [93m>(B[m [95m50(B[m [38;5;224m))(B[m[93m;(B[m [93mthen(B[m[K
+            notify-send [93m-u(B[m critical [93m-i(B[m [38;5;81m$NOTIFY_ICON(B[m \[K
+                [93m"(B[m[95mYou really need to update!!(B[m[93m"(B[m [93m"(B[m[38;5;81m$UPDATES(B[m[95m New packages(B[m[93m"
+(B[m        [93melif(B[m [38;5;224m(((B[m UPDATES [93m>(B[m [95m25(B[m [38;5;224m))(B[m[93m;(B[m [93mthen(B[m[K
+            notify-send [93m-u(B[m normal [93m-i(B[m [38;5;81m$NOTIFY_ICON(B[m \[K
+                [93m"(B[m[95mYou should update soon(B[m[93m"(B[m [93m"(B[m[38;5;81m$UPDATES(B[m[95m New packages(B[m[93m"(B[m[K
+        [93melif(B[m [38;5;224m(((B[m UPDATES [93m>(B[m [95m2(B[m [38;5;224m))(B[m[93m;(B[m [93mthen(B[m[K
+            notify-send [93m-u(B[m low [93m-i(B[m [38;5;81m$NOTIFY_ICON(B[m \[K
+                [93m"(B[m[38;5;81m$UPDATES(B[m[95m New packages(B[m[93m"(B[m[K
+        [93mfi(B[m[K
+    [93mfi(B[m[K
+[K
+    [96m# when there are updates available(B[m[K
+    [96m# every 10 seconds another check for updates is done(B[m[K
+    [93mwhile (B[m[38;5;224m(((B[m UPDATES [93m>(B[m [95m0(B[m [38;5;224m))(B[m[93m; do(B[m[K
+        [93mif (B[m[38;5;224m(((B[m UPDATES [93m==(B[m [95m1(B[m [38;5;224m))(B[m[93m;(B[m [93mthen(B[m[K
+            [93mecho(B[m[95m (B[m[93m"(B[m[95m (B[m[38;5;81m$UPDATES(B[m[93m"(B[m[K
+        [93melif(B[m [38;5;224m(((B[m UPDATES [93m>(B[m [95m1(B[m [38;5;224m))(B[m[93m;(B[m [93mthen(B[m[K
+            [93mecho(B[m[95m (B[m[93m"(B[m[95m (B[m[38;5;81m$UPDATES(B[m[93m"(B[m[K
+        [93melse(B[m[K
+            [93mecho(B[m[95m (B[m[93m"(B[m[95m None(B[m[93m"(B[m[K
+        [93mfi(B[m[K
+        [93msleep(B[m [95m10(B[m[K
+        get_total_updates[K
+    [93mdone(B[m[K
+[K
+    [96m# when no updates are available, use a longer loop, this saves on CPU(B[m[K
+(B[0;1;7mupdates.sh                                         1,1            Top]112[2 q]112[2 q[?1002h[?1006h[H[?25h[?25l[?1004h[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H    [96m# and network uptime, only checking once every 30 min for new updates(B[m[K
+    [93mwhile (B[m[38;5;224m(((B[m UPDATES [93m==(B[m [95m0(B[m [38;5;224m))(B[m[93m; do(B[m[K
+        [93mecho(B[m[95m (B[m[93m"(B[m[95m None(B[m[93m"(B[m[K[42;52H(B[0;1;7m4,0-1          42%[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H        [93msleep(B[m [95m1800(B[m[K
+        get_total_updates[K
+    [93mdone(B[m[K
+[93mdone(B[m[K[42;52H(B[0;1;7m7,1            Bot[H[?25h[?25l[1;41r[H(B[m[4L[1;43r[H[K
+(B[0;1m[96mget_total_updates() {(B[m (B[0;1m[96mUPDATES(B[m=[38;5;81m$((B[m[38;5;224m~/.config/polybar/material/scripts/checkupdates (B[m[95m2(B[m[93m>(B[m[38;5;224m/dev/null (B[m[93m|(B[m[38;5;224m wc -l(B[m[38;5;81m)(B[m[93m;(B[m (B[0;1m[96m}(B[m[K
+[K[42;67H(B[0;1;7m42%[37A[?25h[?25l[1;41r[H(B[m[4L[1;43r[H[96m#!/usr/bin/env bash(B[m[K
+[K
+(B[0;1m[96mNOTIFY_ICON(B[m=/usr/share/icons/Papirus/32x32/apps/system-software-update.svg[K[42;67H(B[0;1;7mTop[33A[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H    [96m# and network uptime, only checking once every 30 min for new updates(B[m[K
+    [93mwhile (B[m[38;5;224m(((B[m UPDATES [93m==(B[m [95m0(B[m [38;5;224m))(B[m[93m; do(B[m[K
+        [93mecho(B[m[95m (B[m[93m"(B[m[95m None(B[m[93m"(B[m[K[42;67H(B[0;1;7m42%[37A[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H        [93msleep(B[m [95m1800(B[m[K
+        get_total_updates[K
+    [93mdone(B[m[K
+[93mdone(B[m[K[42;67H(B[0;1;7mBot[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;52H(B[0;1;7m10,1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m6[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;52H(B[0;1;7m22[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m5[H[?25h[?25l[1;41r[H(B[m[3L[1;43r[H    [93mfi(B[m[K
+[K
+    [96m# when there are updates available(B[m[K
+[?25h[?25l[1;41r[H[3L[1;43r[H            notify-send [93m-u(B[m low [93m-i(B[m [38;5;81m$NOTIFY_ICON(B[m \[K
+                [93m"(B[m[38;5;81m$UPDATES(B[m[95m New packages(B[m[93m"(B[m[K
+        [93mfi(B[m[K
+
+
+
+[?25h[?25l[1;41r[H[3L[1;43r[H            notify-send [93m-u(B[m normal [93m-i(B[m [38;5;81m$NOTIFY_ICON(B[m \[K
+                [93m"(B[m[95mYou should update soon(B[m[93m"(B[m [93m"(B[m[38;5;81m$UPDATES(B[m[95m New packages(B[m[93m"(B[m[K
+        [93melif(B[m [38;5;224m(((B[m UPDATES [93m>(B[m [95m2(B[m [38;5;224m))(B[m[93m;(B[m [93mthen(B[m[K[7B[?25h[?25l[1;41r[H[3L[1;43r[H            notify-send [93m-u(B[m critical [93m-i(B[m [38;5;81m$NOTIFY_ICON(B[m \[K
+                [93m"(B[m[95mYou really need to update!!(B[m[93m"(B[m [93m"(B[m[38;5;81m$UPDATES(B[m[95m New packages(B[m[93m"
+(B[m        [93melif(B[m [38;5;224m(((B[m UPDATES [93m>(B[m [95m25(B[m [38;5;224m))(B[m[93m;(B[m [93mthen(B[m[K[10B[?25h[?25l[1;41r[H[3L[1;43r[H    [96m# notify user of updates(B[m[K
+    [93mif hash(B[m notify-send [93m&>(B[m/dev/null[93m;(B[m [93mthen(B[m[K
+        [93mif (B[m[38;5;224m(((B[m UPDATES [93m>(B[m [95m50(B[m [38;5;224m))(B[m[93m;(B[m [93mthen(B[m[K[13B[?25h[?25l[1;41r[H[3L[1;43r[H[93mwhile true; do(B[m[K
+    get_total_updates[K
+[K[16B[?25h[?25l[1;41r[H[4L[1;43r[H[K
+(B[0;1m[96mget_total_updates() {(B[m (B[0;1m[96mUPDATES(B[m=[38;5;81m$((B[m[38;5;224m~/.config/polybar/material/scripts/checkupdates (B[m[95m2(B[m[93m>(B[m[38;5;224m/dev/null (B[m[93m|(B[m[38;5;224m wc -l(B[m[38;5;81m)(B[m[93m;(B[m (B[0;1m[96m}(B[m[K
+[K[42;67H(B[0;1;7m42%[19A[?25h[?25l[1;41r[H(B[m[4L[1;43r[H[96m#!/usr/bin/env bash(B[m[K
+[K
+(B[0;1m[96mNOTIFY_ICON(B[m=/usr/share/icons/Papirus/32x32/apps/system-software-update.svg[K[42;67H(B[0;1;7mTop[15A[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H    [96m# and network uptime, only checking once every 30 min for new updates(B[m[K
+    [93mwhile (B[m[38;5;224m(((B[m UPDATES [93m==(B[m [95m0(B[m [38;5;224m))(B[m[93m; do(B[m[K
+        [93mecho(B[m[95m (B[m[93m"(B[m[95m None(B[m[93m"(B[m[K[42;67H(B[0;1;7m42%[19A[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H        [93msleep(B[m [95m1800(B[m[K
+        get_total_updates[K
+    [93mdone(B[m[K
+[93mdone(B[m[K[42;67H(B[0;1;7mBot[23A[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[25A[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[28A[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[31A[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[34A[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[37A[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;52H(B[0;1;7m31[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m4[H[?25h[?25l[42;52H45,4[14;4H[?25h[?25l[43;59H(B[m:         [14;4H[?25h[?25l[29B[J:]112[2 q[?1002l[?1006l[?25h[?25lq[?25h[?25l[43;1H[?25h[?25l]112[2 q[?1002h[?1006h[?25h[?25l]112[2 q[?1002l[?1006l(B[m[?25h[?1l>[>4;0m[?1049l[23;0;0t[23;0t[?2004l[?1004l[?25h[?2004h[jayasurya@JayasuryaMarasani scripts]$ nvim random.sh 
+[?2004l[?1049h[22;0;0t[22;0t[?1h=[H[2J]11;?[?2004h[?u[c[?25h[?25l(B[m[H[2J[>4;2m[96m#!/usr/bin/env bash(B[m[K
+[K
+[96m# Color files(B[m[K
+(B[0;1m[96mPFILE(B[m=[93m"(B[m[38;5;81m$HOME(B[m[95m/.config/polybar/material/colors.ini(B[m[93m"(B[m[K
+(B[0;1m[96mRFILE(B[m=[93m"(B[m[38;5;81m$HOME(B[m[95m/.config/polybar/material/scripts/rofi/colors.rasi(B[m[93m"(B[m[K
+[K
+[96m# Change colors(B[m[K
+(B[0;1m[96mchange_color() {(B[m[K
+        [96m# polybar(B[m[K
+        [93msed(B[m [38;5;224m-i(B[m [38;5;224m-e(B[m [93m"(B[m[95ms/background = #.*/background = (B[m[38;5;81m$BG(B[m[95m/g(B[m[93m"(B[m [38;5;81m$PFILE(B[m[K
+        [93msed(B[m [38;5;224m-i(B[m [38;5;224m-e(B[m [93m"(B[m[95ms/foreground = #.*/foreground = (B[m[38;5;81m$FG(B[m[95m/g(B[m[93m"(B[m [38;5;81m$PFILE(B[m[K
+        [93msed(B[m [38;5;224m-i(B[m [38;5;224m-e(B[m [93m"(B[m[95ms/foreground-alt = #.*/foreground-alt = (B[m[38;5;81m$FGA(B[m[95m/g(B[m[93m"(B[m [38;5;81m$PFILE(B[m[K
+        [93msed(B[m [38;5;224m-i(B[m [38;5;224m-e(B[m [93m"(B[m[95ms/module-fg = #.*/module-fg = (B[m[38;5;81m$MF(B[m[95m/g(B[m[93m"(B[m [38;5;81m$PFILE(B[m[K
+        [93msed(B[m [38;5;224m-i(B[m [38;5;224m-e(B[m [93m"(B[m[95ms/primary = #.*/primary = (B[m[38;5;81m$AC(B[m[95m/g(B[m[93m"(B[m [38;5;81m$PFILE(B[m[K
+        [93msed(B[m [38;5;224m-i(B[m [38;5;224m-e(B[m [93m"(B[m[95ms/secondary = #.*/secondary = (B[m[38;5;81m$SC(B[m[95m/g(B[m[93m"(B[m [38;5;81m$PFILE(B[m[K
+        [93msed(B[m [38;5;224m-i(B[m [38;5;224m-e(B[m [93m"(B[m[95ms/alternate = #.*/alternate = (B[m[38;5;81m$AL(B[m[95m/g(B[m[93m"(B[m [38;5;81m$PFILE(B[m[K
+        [K
+        [96m# rofi(B[m[K
+        cat [93m>(B[m [38;5;81m$RFILE(B[m [93m<<- EOF(B[m[K
+[95m        /* colors */(B[m[K
+[K
+[95m        * {(B[m[K
+[95m          al:   #00000000;(B[m[K
+[95m          bg:   (B[m[38;5;81m${BG}(B[m[95mFF;(B[m[K
+[95m          bga:  (B[m[38;5;81m${AC}(B[m[95m33;(B[m[K
+[95m          bar:  (B[m[38;5;81m${MF}(B[m[95mFF;(B[m[K
+[95m          fg:   (B[m[38;5;81m${FG}(B[m[95mFF;(B[m[K
+[95m          ac:   (B[m[38;5;81m${AC}(B[m[95mFF;(B[m[K
+[95m        }(B[m[K
+[93m        EOF(B[m[K
+[K
+        polybar-msg cmd restart[K
+(B[0;1m[96m}(B[m[K
+[K
+(B[0;1m[96mget_random_number() {(B[m[K
+        (B[0;1m[96mRNUM(B[m=[38;5;81m$(((B[m[38;5;224m (B[m[38;5;81m($RANDOM(B[m[38;5;224m % (B[m[38;5;81m$1)(B[m[38;5;224m + (B[m[95m1(B[m[38;5;224m (B[m[38;5;81m))(B[m[K
+(B[0;1m[96m}(B[m[K
+[K
+(B[0;1m[96mget_random_color() {(B[m[K
+        (B[0;1m[96mRCOLOR(B[m=[93m"(B[m[95m#(B[m[93m"(B[m[K
+(B[0;1;7mrandom.sh                                          1,1            Top]112[2 q]112[2 q[?1002h[?1006h[H[?25h[?25l[?1004h[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H        [93mfor(B[m i [93min(B[m [95m1(B[m [95m2(B[m [95m3(B[m [95m4(B[m [95m5(B[m [95m6(B[m[K
+        [93mdo(B[m[K
+                get_random_number [93m"(B[m[95m16(B[m[93m"(B[m[K[42;52H(B[0;1;7m4,1             5%[1;41r[H(B[m[3M[1;43r[39;1H                [93mcase(B[m [38;5;81m$RNUM(B[m [93min(B[m[K
+                        [93m"(B[m[95m1(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95m1(B[m[93m";;(B[m[K
+                        [93m"(B[m[95m2(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95m2(B[m[93m";;(B[m[K[42;52H(B[0;1;7m7,1            10[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H                        [93m"(B[m[95m3(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95m3(B[m[93m";;(B[m[K
+                        [93m"(B[m[95m4(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95m4(B[m[93m";;(B[m[K
+                        [93m"(B[m[95m5(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95m5(B[m[93m";;(B[m[K[42;52H(B[0;1;7m10,1-8         16[1;8H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H                        [93m"(B[m[95m6(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95m6(B[m[93m";;(B[m[K
+                        [93m"(B[m[95m7(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95m7(B[m[93m";;(B[m[K
+                        [93m"(B[m[95m8(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95m8(B[m[93m";;(B[m[K
+                        [93m"(B[m[95m9(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95m9(B[m[93m";;(B[m[K[42;53H(B[0;1;7m3,1-8         21[1;41r[H(B[m[3M[1;43r[39;1H                        [93m"(B[m[95m10(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95mA(B[m[93m";;(B[m[K
+                        [93m"(B[m[95m11(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95mB(B[m[93m";;(B[m[K
+                        [93m"(B[m[95m12(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95mC(B[m[93m";;(B[m[K[42;53H(B[0;1;7m6,1-8         27[1;8H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H                        [93m"(B[m[95m13(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95mD(B[m[93m";;(B[m[K
+                        [93m"(B[m[95m14(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95mE(B[m[93m";;(B[m[K
+                        [93m"(B[m[95m15(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95mF(B[m[93m";;(B[m[K[42;53H(B[0;1;7m9,1-8         32[1;8H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H                        [93m"(B[m[95m16(B[m[93m")(B[m (B[0;1m[96mNEXTDIGIT(B[m=[93m"(B[m[95m0(B[m[93m";;(B[m[K
+                [93mesac(B[m[K
+                (B[0;1m[96mRCOLOR(B[m=[93m"(B[m[38;5;81m$RCOLOR$NEXTDIGIT(B[m[93m"(B[m[K[42;52H(B[0;1;7m22,1-8         38[1;8H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H        [93mdone(B[m[K
+        [93mecho(B[m[95m (B[m[38;5;81m$RCOLOR(B[m[K
+(B[0;1m[96m}(B[m[K[42;53H(B[0;1;7m5,1-8         43[1;41r[H(B[m[3M[1;43r[39;1H[K
+(B[0;1m[96mhex_to_rgb() {(B[m[K
+    [96m# Convert a hex value WITHOUT the hashtag (#)(B[m[K[42;53H(B[0;1;7m8,1-8         49[1;8H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H    (B[0;1m[96mR(B[m=[38;5;81m$((B[m[93mprintf(B[m[38;5;224m (B[m[93m"(B[m[95m%d(B[m[93m"(B[m[38;5;224m 0x(B[m[38;5;81m${1(B[m[93m:0:2(B[m[38;5;81m})(B[m[K
+    (B[0;1m[96mG(B[m=[38;5;81m$((B[m[93mprintf(B[m[38;5;224m (B[m[93m"(B[m[95m%d(B[m[93m"(B[m[38;5;224m 0x(B[m[38;5;81m${1(B[m[93m:2:2(B[m[38;5;81m})(B[m[K
+    (B[0;1m[96mB(B[m=[38;5;81m$((B[m[93mprintf(B[m[38;5;224m (B[m[93m"(B[m[95m%d(B[m[93m"(B[m[38;5;224m 0x(B[m[38;5;81m${1(B[m[93m:4:2(B[m[38;5;81m})(B[m[K[42;52H(B[0;1;7m31,0-1         54[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H(B[0;1m[96m}(B[m[K
+[K
+(B[0;1m[96mget_fg_color(){(B[m[K[42;53H(B[0;1;7m4,0-1         60[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H    (B[0;1m[96mINTENSITY(B[m=[38;5;81m$((B[m[38;5;224mcalc (B[m[93m"(B[m[38;5;81m$R(B[m[95m*0.299 + (B[m[38;5;81m$G(B[m[95m*0.587 + (B[m[38;5;81m$B(B[m[95m*0.114(B[m[93m"(B[m[38;5;81m)(B[m[K
+    [K
+    [93mif [(B[m [38;5;81m$((B[m[93mecho(B[m[95m (B[m[93m"(B[m[38;5;81m$INTENSITY(B[m[95m>186(B[m[93m"(B[m[95m (B[m[93m|(B[m[38;5;224m bc(B[m[38;5;81m)(B[m [93m-eq(B[m [95m1(B[m [93m];(B[m [93mthen(B[m[K
+(B[0;1;7m7,1           65[1;41r[H(B[m[3M[1;43r[39;1H        (B[0;1m[96mMF(B[m=[93m"(B[m[95m#0a0a0a(B[m[93m"(B[m[K
+    [93melse(B[m[K
+        (B[0;1m[96mMF(B[m=[93m"(B[m[95m#F5F5F5(B[m[93m"(B[m[K[42;52H(B[0;1;7m40,1-8         70[1;41r[H(B[m[3M[1;43r[39;1H    [93mfi(B[m[K
+(B[0;1m[96m}(B[m[K
+[K[42;53H(B[0;1;7m3,1-8         76[1;41r[H(B[m[3M[1;43r[39;1H[96m# Main(B[m[K
+(B[0;1m[96mBG(B[m=[93m'(B[m[95m#1F1F1F(B[m[93m'(B[m    [96m# change to light bg(B[m[K
+(B[0;1m[96mFG(B[m=[93m'(B[m[95m#FFFFFF(B[m[93m'(B[m    [96m# change to dark fg(B[m[K[42;53H(B[0;1;7m6,1-8         81[1;8H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H(B[0;1m[96mFGA(B[m=[38;5;224m`get_random_color`(B[m[K
+(B[0;1m[96mAC(B[m=[38;5;224m`get_random_color`(B[m[K
+(B[0;1m[96mSC(B[m=[38;5;224m`get_random_color`(B[m[K[42;53H(B[0;1;7m9,1-8         87[1;8H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H(B[0;1m[96mAL(B[m=[38;5;224m`get_random_color`(B[m[K
+[K
+(B[0;1m[96mHEX(B[m=[38;5;81m${AC(B[m[93m:1(B[m[38;5;81m}(B[m[K[42;52H(B[0;1;7m52,1-8         92[1;8H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+hex_to_rgb [38;5;81m$HEX(B[m[K
+get_fg_color[K[42;53H(B[0;1;7m5,1-8         98[1;8H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1Hchange_color[K
+[94m~[K
+~[K[42;53H(B[0;1;7m8,1-8         Bot[1;8H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;52H(B[0;1;7m61[1;8H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m4[1;8H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m7,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;52H(B[0;1;7m70[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m3,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m6,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;52H(B[0;1;7m82[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;52H(B[0;1;7m91,0-1[H[?25h[?25l[43;59H(B[m^[        [H[?25h[?25l[43;59H  [H[?25h[?25l[43;59H:[H[?25h[?25l[42B[J:]112[2 q[?1002l[?1006l[?25h[?25lq[?25h[?25l[43;1H[?25h[?25l]112[2 q[?1002h[?1006h[?25h[?25l]112[2 q[?1002l[?1006l(B[m[?25h[?1l>[>4;0m[?1049l[23;0;0t[23;0t[?2004l[?1004l[?25h[?2004h[jayasurya@JayasuryaMarasani scripts]$ nvim random.sh [1@updates[C[C[C[Cls[Kcd scripts/nvim .config/polybar/material/config.ini [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C~.config/polybar/material/[1@c[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C/.config/polybar/material[1@/[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+
+[?2004l[?1049h[22;0;0t[22;0t[?1h=[H[2J]11;?[?2004h[?u[c[?25h[?25l(B[m[H[2J[>4;2m[96m;; ┌[1;5H─[1;6H─[1;7H─[1;8H─[1;9H─[1;10H─[1;11H─[1;12H─[1;13H─[1;14H─[1;15H─[1;16H─[1;17H─[1;18H─[1;19H─[1;20H─[1;21H─[1;22H─[1;23H─[1;24H─[1;25H─[1;26H─[1;27H─[1;28H─[1;29H─[1;30H─[1;31H─[1;32H─[1;33H─[1;34H─[1;35H─[1;36H─[1;37H─[1;38H─[1;39H─[1;40H─[1;41H─[1;42H─[1;43H─[1;44H─[1;45H─[1;46H─[1;47H─[1;48H─[1;49H─[1;50H─[1;51H─[1;52H─[1;53H─[1;54H─[1;55H─[1;56H─[1;57H─[1;58H─[1;59H─[1;60H─[1;61H─[1;62H─[1;63H─[1;64H─[1;65H┐(B[m[1;66H[K
+[96m;; │[2;5H░█[2;7H▀[2;8H█[2;9H░█[2;11H▀[2;12H█[2;13H░█[2;15H░░░█[2;19H░█[2;21H░█[2;23H▀[2;24H▄[2;25H░█[2;27H▀[2;28H█[2;29H░█[2;31H▀[2;32H▄[2;33H░░░░░░░░░█[2;43H▀[2;44H▀[2;45H░█[2;47H▀[2;48H█[2;49H░█[2;51H▀[2;52H█[2;53H░█[2;55H▀[2;56H▀[2;57H░▀[2;59H█[2;60H▀[2;61H░█[2;63H▀[2;64H▀[2;65H│(B[m[2;66H[K
+[96m;; │[3;5H░█[3;7H▀[3;8H▀[3;9H░█[3;11H░█[3;13H░█[3;15H░░░░█[3;20H░░█[3;23H▀[3;24H▄[3;25H░█[3;27H▀[3;28H█[3;29H░█[3;31H▀[3;32H▄[3;33H░░░░▀[3;38H░░░░█[3;43H░░░█[3;47H░█[3;49H░█[3;51H░█[3;53H░█[3;55H▀[3;56H▀[3;57H░░█[3;60H░░█[3;63H░█[3;65H│(B[m[3;66H[K
+[96m;; │[4;5H░▀[4;7H░░░▀[4;11H▀[4;12H▀[4;13H░▀[4;15H▀[4;16H▀[4;17H░░▀[4;20H░░▀[4;23H▀[4;24H░░▀[4;27H░▀[4;29H░▀[4;31H░▀[4;33H░░░░▀[4;38H░░░░▀[4;43H▀[4;44H▀[4;45H░▀[4;47H▀[4;48H▀[4;49H░▀[4;51H░▀[4;53H░▀[4;55H░░░▀[4;59H▀[4;60H▀[4;61H░▀[4;63H▀[4;64H▀[4;65H│(B[m[4;66H[K
+[96m;; │[5;5H░Created░By░Aditya░Shakya░@adi1090x░░░░░░░░░░░░░░░░░░░░░░░░░│(B[m[5;66H[K
+[96m;; └[6;5H─[6;6H─[6;7H─[6;8H─[6;9H─[6;10H─[6;11H─[6;12H─[6;13H─[6;14H─[6;15H─[6;16H─[6;17H─[6;18H─[6;19H─[6;20H─[6;21H─[6;22H─[6;23H─[6;24H─[6;25H─[6;26H─[6;27H─[6;28H─[6;29H─[6;30H─[6;31H─[6;32H─[6;33H─[6;34H─[6;35H─[6;36H─[6;37H─[6;38H─[6;39H─[6;40H─[6;41H─[6;42H─[6;43H─[6;44H─[6;45H─[6;46H─[6;47H─[6;48H─[6;49H─[6;50H─[6;51H─[6;52H─[6;53H─[6;54H─[6;55H─[6;56H─[6;57H─[6;58H─[6;59H─[6;60H─[6;61H─[6;62H─[6;63H─[6;64H─[6;65H┘(B[m[6;66H[K
+[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[96m;; Global WM Settings(B[m[K
+[K
+[38;5;224m[global/wm](B[m[K
+[96m; Adjust the _NET_WM_STRUT_PARTIAL top value(B[m[K
+[96m; Used for top aligned bars(B[m[K
+[38;5;121mmargin-bottom(B[m =[95m 0(B[m[K
+[K
+[96m; Adjust the _NET_WM_STRUT_PARTIAL bottom value(B[m[K
+[96m; Used for bottom aligned bars(B[m[K
+[38;5;121mmargin-top(B[m =[95m 0(B[m[K
+[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[96m;; File Inclusion(B[m[K
+[96m; include an external file, like module file, etc.(B[m[K
+[K
+[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/bars.ini(B[m[K
+[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/colors.ini(B[m[K
+[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/modules.ini(B[m[K
+[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/user_modules.ini(B[m[K
+[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[96m;; Bar Settings(B[m[K
+[K
+[38;5;224m[bar/main](B[m[K
+[96m; Use either of the following command to list available outputs:(B[m[K
+[96m; If unspecified, the application will pick the first one it finds.(B[m[K
+[96m; $ polybar -m | cut -d ':' -f 1(B[m[K
+[96m; $ xrandr -q | grep " connected" | cut -d ' ' -f1(B[m[K
+[38;5;121mmonitor(B[m =[K
+[K
+(B[0;1;7m~/.config/polybar/material/config.ini              1,1            Top]112[2 q]112[2 q[?1002h[?1006h[H[?25h[?25l[?1004h[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Use the specified monitor as a fallback if the main one is not found.(B[m[K
+[38;5;121mmonitor-fallback(B[m =[K[42;52H(B[0;1;7m4,1             1%[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Require the monitor to be in connected state(B[m[K
+[96m; XRandR sometimes reports my monitor as being disconnected (when in [41;67H(B[m[94m@@@[42;52H(B[0;1;7m7,0-1           2[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[38;67H[96min use)(B[m[K
+[38;5;121mmonitor-strict(B[m =[95m false(B[m[K
+[K[42;52H(B[0;1;7m10,1            3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Tell the Window Manager not to configure the window.(B[m[K
+[96m; Use this to detach the bar if your WM is locking its size/position.
+(B[m[38;5;121moverride-redirect(B[m =[95m false(B[m[K[42;53H(B[0;1;7m3,1            4[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Put the bar at the bottom of the screen(B[m[K
+[38;5;121mbottom(B[m =[95m false(B[m[K[42;53H(B[0;1;7m6,0-1          5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Prefer fixed center position for the `modules-center` block(B[m[K
+[96m; When false, the center position will be based on the size of the ot[41;67H(B[m[94m@@@[42;53H(B[0;1;7m9,1            7[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[38;67H[96m other blocks.(B[m[K
+[38;5;121mfixed-center(B[m =[95m true(B[m[K
+[K[42;52H(B[0;1;7m22,0-1          8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Dimension defined as pixel value (e.g. 35) or percentage (e.g. 50%),(B[m[K
+[96m; the percentage can optionally be extended with a pixel offset like [41;67H(B[m[94m@@@[42;53H(B[0;1;7m5,0-1          9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[38;67H[96mke so:(B[m[K
+[96m; 50%:-10, this will result in a width or height of 50% minus 10 pixels(B[m[K[42;53H(B[0;1;7m8,1           10[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mwidth(B[m =[95m 100%(B[m[K
+[38;5;121mheight(B[m =[95m 40(B[m[K
+[K[42;52H(B[0;1;7m31,1           11[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Offset defined as pixel value (e.g. 35) or percentage (e.g. 50%)(B[m[K
+[96m; the percentage can optionally be extended with a pixel offset like so:(B[m[K[42;53H(B[0;1;7m4,0-1         12[1;41r[H(B[m[3M[1;43r[39;1H[96m; 50%:-10, this will result in an offset in the x or y direction (B[m[K
+[96m; of 50% minus 10 pixels(B[m[K
+[38;5;121moffset-x(B[m =[95m 0%(B[m[K[42;53H(B[0;1;7m7,1           13[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121moffset-y(B[m =[95m 0%(B[m[K
+[K
+[96m; Background ARGB color (e.g. #f00, #ff992a, #ddff1023)(B[m[K[42;52H(B[0;1;7m40,1           15[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[38;5;121mbackground(B[m =[95m ${color.background}(B[m[K
+[K
+[96m; Foreground ARGB color (e.g. #f00, #ff992a, #ddff1023)(B[m[K
+[38;5;121mforeground(B[m =[95m ${color.foreground}(B[m[K[42;53H(B[0;1;7m3,1           16[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Background gradient (vertical steps)(B[m[K
+[96m;   background-[0-9]+ = #aarrggbb(B[m[K[42;53H(B[0;1;7m6,1           17[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[96m;;background-0 = (B[m[K
+[K
+[96m; Value used for drawing rounded corners(B[m[K
+[96m; Note: This shouldn't be used together with border-size because the [41;67H(B[m[94m@@@[42;53H(B[0;1;7m9,1           18[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[38;67H[96mhe border (B[m[K
+[96m; doesn't get rounded(B[m[K
+[96m; Individual top/bottom values can be defined using:(B[m[K[42;52H(B[0;1;7m52,0-1         19[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   radius-{top,bottom}(B[m[K
+[38;5;121mradius-top(B[m =[95m 0.0(B[m[K
+[38;5;121mradius-bottom(B[m =[95m 0.0(B[m[K[42;53H(B[0;1;7m5,0-1         20[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[K
+[96m; Under-/overline pixel size and argb color(B[m[K
+[96m; Individual values can be defined using:(B[m[K
+[96m;   {overline,underline}-size(B[m[K[42;53H(B[0;1;7m8,1           22[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[96m;   {overline,underline}-color(B[m[K
+[38;5;121mline-size(B[m =[95m 2(B[m[K
+[38;5;121mline-color(B[m =[95m ${color.primary}(B[m[K
+[K[42;52H(B[0;1;7m61,1           23[H[?25h[?25l[1;41r[H(B[m[5M[1;43r[37;1H[96m; Values applied to all borders(B[m[K
+[96m; Individual side values can be defined using:(B[m[K
+[96m;   border-{left,top,right,bottom}-size(B[m[K
+[96m;   border-{left,top,right,bottom}-color(B[m[K
+[96m; The top and bottom borders are added to the bar height, so the effe[41;67H(B[m[94m@@@[42;53H(B[0;1;7m4,1           24[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[38;67H[96mffective(B[m[K
+[96m; window height is:(B[m[K
+[96m;   height + border-top-size + border-bottom-size(B[m[K[42;53H(B[0;1;7m7,1           25[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[96m; Meanwhile the effective window width is defined entirely by the width key and(B[m[K
+[96m; the border is placed withing this area. So you effectively only have the(B[m[K[42;52H(B[0;1;7m70,1           26[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; following horizontal space on the bar:(B[m[K
+[96m;   width - border-right-size - border-left-size(B[m[K
+[38;5;121mborder-size(B[m =[95m 3(B[m[K[42;53H(B[0;1;7m3,1           28[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mborder-color(B[m =[95m ${color.background}(B[m[K
+[K
+[96m; Number of spaces to add at the beginning/end of the bar(B[m[K[42;53H(B[0;1;7m6,1           29[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Individual side values can be defined using:(B[m[K
+[96m;   padding-{left,right}(B[m[K
+[38;5;121mpadding(B[m =[95m 0(B[m[K[42;53H(B[0;1;7m9,1           30[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Number of spaces to add before/after each module(B[m[K
+[96m; Individual side values can be defined using:(B[m[K[42;52H(B[0;1;7m82,0-1         31[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[96m;   module-margin-{left,right}(B[m[K
+[38;5;121mmodule-margin-left(B[m =[95m 1(B[m[K
+[38;5;121mmodule-margin-right(B[m =[95m 1(B[m[K
+[K[42;53H(B[0;1;7m5,1           32[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[96m; Fonts are defined using <font-name>;<vertical-offset>(B[m[K[42;53H(B[0;1;7m8,1           34[1;41r[H(B[m[3M[1;43r[39;1H[96m; Font names are specified using a fontconfig pattern.(B[m[K
+[96m;   font-0 = NotoSans-Regular:size=8;2(B[m[K
+[96m;   font-1 = MaterialIcons:size=10(B[m[K[42;52H(B[0;1;7m91,1           35[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   font-2 = Termsynu:size=8;-1(B[m[K
+[96m;   font-3 = FontAwesome:size=10(B[m[K
+[96m; See the Fonts wiki page for more details(B[m[K[42;53H(B[0;1;7m4,1           36[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[38;5;121mfont-0(B[m =[95m "Fantasque Sans Mono:pixelsize=12;3"(B[m[K
+[38;5;121mfont-1(B[m =[95m "Material\-Design\-Iconic\-Font:size=13;4"(B[m[K[42;53H(B[0;1;7m7,0-1         37[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Modules are added to one of the available blocks(B[m[K
+[96m;   modules-left = cpu ram(B[m[K[42;52H(B[0;1;7m100,1          38[1;41r[H(B[m[4M[1;43r[38;1H[96m;   modules-center = xwindow xbacklight(B[m[K
+[96m;   modules-right = ipc clock(B[m[K
+[K
+[38;5;121mmodules-left(B[m =[95m launcher workspaces term files browser settings(B[m[K[42;54H(B[0;1;7m3,1          40[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[38;5;121mmodules-center(B[m =[95m xwindow(B[m[K
+[38;5;121mmodules-right(B[m =[95m brightnessctl alsa battery network date sysmenu(B[m[K
+[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K[42;54H(B[0;1;7m6,1          41[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[K
+[96m; The separator will be inserted between the output of each module(B[m[K
+[38;5;121mseparator(B[m =[K
+[K[42;54H(B[0;1;7m9,1          42[1;41r[H(B[m[3M[1;43r[39;1H[96m; Opacity value between 0.0 and 1.0 used on fade in/out(B[m[K
+[38;5;121mdim-value(B[m =[95m 1.0(B[m[K
+[K[42;53H(B[0;1;7m12,1          44[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Value to be used to set the WM_NAME atom(B[m[K
+[96m; If the value is empty or undefined, the atom value(B[m[K
+[96m; will be created from the following template: polybar-[BAR]_[MONITOR[41;67H(B[m[94m@@@[42;54H(B[0;1;7m5,1          45[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[38;67H[96mTOR](B[m[K
+[96m; NOTE: The placeholders are not available for custom values(B[m[K
+[38;5;121mwm-name(B[m =[95m (B[m[K[42;54H(B[0;1;7m8,1          46[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Locale used to localize various module data (e.g. date)(B[m[K
+[96m; Expects a valid libc locale, for example: sv_SE.UTF-8(B[m[K[42;53H(B[0;1;7m21,1          47[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mlocale(B[m =[95m (B[m[K
+[K
+[96m; Position of the system tray window(B[m[K[42;54H(B[0;1;7m4,0-1        48[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; If empty or undefined, tray support will be disabled(B[m[K
+[96m; NOTE: A center aligned tray will cover center aligned modules(B[m[K
+[96m;(B[m[K[42;54H(B[0;1;7m7,1          49[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available positions:(B[m[K
+[96m;   left(B[m[K
+[96m;   center(B[m[K[42;53H(B[0;1;7m30,1          50[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   right(B[m[K
+[96m;   none(B[m[K
+[38;5;121mtray-position(B[m =[95m none(B[m[K[42;54H(B[0;1;7m3,1          52[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; If true, the bar will not shift its(B[m[K
+[96m; contents when the tray changes(B[m[K[42;54H(B[0;1;7m6,1          53[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mtray-detached(B[m =[95m false(B[m[K
+[K
+[96m; Tray icon max size(B[m[K[42;54H(B[0;1;7m9,1          54[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mtray-maxsize(B[m =[95m 16(B[m[K
+[K
+[96m; Background color for the tray container (B[m[K[42;53H(B[0;1;7m42,1          55[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; ARGB color (e.g. #f00, #ff992a, #ddff1023)(B[m[K
+[96m; By default the tray container will use the bar(B[m[K
+[96m; background color.(B[m[K[42;54H(B[0;1;7m5,1          56[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mtray-background(B[m =[95m ${color.background}(B[m[K
+[K
+[96m; Tray offset defined as pixel value (e.g. 35) or percentage (e.g. 50[41;67H(B[m[94m@@@[42;54H(B[0;1;7m8,1          57[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[38;67H[96m 50%)(B[m[K
+[38;5;121mtray-offset-x(B[m =[95m 0(B[m[K
+[38;5;121mtray-offset-y(B[m =[95m 0(B[m[K[42;53H(B[0;1;7m51,1          59[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Pad the sides of each tray icon(B[m[K
+[38;5;121mtray-padding(B[m =[95m 0(B[m[K[42;54H(B[0;1;7m4,1          60[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[K
+[96m; Scale factor for tray clients(B[m[K
+[38;5;121mtray-scale(B[m =[95m 1.0(B[m[K
+[K[42;54H(B[0;1;7m7,1          61[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Restack the bar window and put it above the(B[m[K
+[96m; selected window manager's root(B[m[K
+[96m;(B[m[K[42;53H(B[0;1;7m60,1          62[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Fixes the issue where the bar is being drawn(B[m[K
+[96m; on top of fullscreen window's(B[m[K
+[96m;(B[m[K[42;54H(B[0;1;7m3,1          64[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Currently supported WM's:(B[m[K
+[96m;   bspwm(B[m[K
+[96m;   i3 (requires: `override-redirect = true`)(B[m[K[42;54H(B[0;1;7m6,1          65[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mwm-restack(B[m =[95m bspwm(B[m[K
+[K
+[96m; Set a DPI values used when rendering text(B[m[K[42;54H(B[0;1;7m9,1          66[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; This only affects scalable fonts(B[m[K
+[96m; dpi = (B[m[K
+[K[42;53H(B[0;1;7m72,1          67[1;41r[H(B[m[3M[1;43r[39;1H[96m; Enable support for inter-process messaging(B[m[K
+[96m; See the Messaging wiki page for more details.(B[m[K
+[38;5;121menable-ipc(B[m =[95m true(B[m[K[42;54H(B[0;1;7m5,1          68[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Fallback click handlers that will be called if(B[m[K
+[96m; there's no matching module handler found.(B[m[K[42;54H(B[0;1;7m8,1          69[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mclick-left(B[m =[95m (B[m[K
+[38;5;121mclick-middle(B[m =[95m (B[m[K
+[38;5;121mclick-right(B[m =[K[42;53H(B[0;1;7m81,1          71[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mscroll-up(B[m =[K
+[38;5;121mscroll-down(B[m =[K
+[38;5;121mdouble-click-left(B[m =[K[42;54H(B[0;1;7m4,1          72[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mdouble-click-middle(B[m =[K
+[38;5;121mdouble-click-right(B[m =[K
+[K[42;54H(B[0;1;7m7,1          73[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[96m; Requires polybar to be built with xcursor support (xcb-util-cursor)
+; Possible values are:(B[m[K
+[96m; - default   : The default pointer as before, can also be an empty string (default)(B[m[K[42;53H(B[0;1;7m90,0-1        74[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; - pointer   : Typically in the form of a hand(B[m[K
+[96m; - ns-resize : Up and down arrows, can be used to indicate scrolling
+(B[m[38;5;121mcursor-click(B[m =[95m (B[m[K[42;54H(B[0;1;7m3,0-1        75[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mcursor-scroll(B[m =[95m (B[m[K
+[K
+[96m;; WM Workspace Specific(B[m[K[42;54H(B[0;1;7m6,0-1        77[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; bspwm(B[m[K
+[96m;;scroll-up = bspwm-desknext(B[m[K[42;54H(B[0;1;7m9,1          78[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;scroll-down = bspwm-deskprev(B[m[K
+[96m;;scroll-up = bspc desktop -f prev.local(B[m[K
+[96m;;scroll-down = bspc desktop -f next.local(B[m[K[42;52H(B[0;1;7m202,1          79[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m;i3(B[m[K
+[96m;;scroll-up = i3wm-wsnext(B[m[K[42;54H(B[0;1;7m5,1          80[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;scroll-down = i3wm-wsprev(B[m[K
+[96m;;scroll-up = i3-msg workspace next_on_output(B[m[K
+[96m;;scroll-down = i3-msg workspace prev_on_output(B[m[K[42;54H(B[0;1;7m8,1          81[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K[42;53H(B[0;1;7m11,0-1        83[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;; Application Settings(B[m[K
+[K
+[38;5;224m[settings](B[m[K[42;54H(B[0;1;7m4,1          84[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; The throttle settings lets the eventloop swallow up til X events(B[m[K
+[96m; if they happen within Y millisecond after first event was received.
+; This is done to prevent flood of update event.(B[m[K[42;54H(B[0;1;7m7,1          85[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;(B[m[K
+[96m; For example if 5 modules emit an update event at the same time, we really(B[m[K[42;53H(B[0;1;7m20,1          86[1;41r[H(B[m[3M[1;43r[39;1H[96m; just care about the last one. But if we wait too long for events to swallow(B[m[K
+[96m; the bar would appear sluggish so we continue if timeout(B[m[K[42;54H(B[0;1;7m3,1          87[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; expires or limit is reached.(B[m[K
+[38;5;121mthrottle-output(B[m =[95m 5(B[m[K
+[38;5;121mthrottle-output-for(B[m =[95m 10(B[m[K[42;54H(B[0;1;7m6,0-1        88[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Time in milliseconds that the input handler will wait between processing events(B[m[K[42;54H(B[0;1;7m9,1          89[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[96m;throttle-input-for = 30(B[m[K
+[K
+[96m; Reload upon receiving XCB_RANDR_SCREEN_CHANGE_NOTIFY events(B[m[K
+[38;5;121mscreenchange-reload(B[m =[95m false(B[m[K[42;53H(B[0;1;7m32,1          90[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Compositing operators(B[m[K
+[96m; @see: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo[41;67H(B[m[94m@@@[42;54H(B[0;1;7m5,1          91[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[38;67H[96miro-operator-t(B[m[K
+[38;5;121mcompositing-background(B[m =[95m source(B[m[K
+[38;5;121mcompositing-foreground(B[m =[95m over(B[m[K[42;54H(B[0;1;7m8,1          92[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mcompositing-overline(B[m =[95m over(B[m[K
+[38;5;121mcompositing-underline(B[m =[95m over(B[m[K
+[38;5;121mcompositing-border(B[m =[95m over(B[m[K[42;53H(B[0;1;7m41,1          93[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Define fallback values used by all module formats(B[m[K
+[96m;format-foreground = (B[m[K[42;54H(B[0;1;7m4,1          94[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;format-background = (B[m[K
+[96m;format-underline =(B[m[K
+[96m;format-overline =(B[m[K[42;54H(B[0;1;7m7,1          96[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;format-spacing =(B[m[K
+[96m;format-padding =(B[m[K
+[96m;format-margin =(B[m[K[42;53H(B[0;1;7m50,0-1        97[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[H[38;5;224m[46m[(B[m[38;5;224msettings(B[m[38;5;224m[46m][38B(B[m[96m;format-offset =(B[m[K
+[K
+[96m; Enables pseudo-transparency for the bar(B[m[K[42;54H(B[0;1;7m3,1          98[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; If set to true the bar can be transparent without a compositor.(B[m[K
+[38;5;121mpseudo-transparency(B[m =[95m false(B[m[K
+[K[42;54H(B[0;1;7m6,1          99[1;41r[H(B[m[4M[1;43r[38;1H[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[94m~[K
+~[K
+~[K[42;54H(B[0;1;7m9,1          Bot[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[94m~[K
+~[K
+~[K
+~[K[42;53H(B[0;1;7m62[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;54H(B[0;1;7m5[1;41r[H(B[m[4M[1;43r[38;1H[94m~[K
+~[K
+~[K
+~[K[42;54H(B[0;1;7m8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m71[1;41r[H(B[m[4M[1;43r[38;1H[94m~[K
+~[K
+~[K
+~[K[42;54H(B[0;1;7m4[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;54H(B[0;1;7m7[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m80[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;54H(B[0;1;7m3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;54H(B[0;1;7m6[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;54H(B[0;1;7m9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[42;53H(B[0;1;7m92,0-1[H[?25h[?25l[1;41r[H(B[m[M[1;43r[41;1H[94m~[K[42;54H(B[0;1;7m3,1  [H[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; If set to true the bar can be transparent without a compositor.(B[m[K
+[38;5;121mpseudo-transparency(B[m =[95m false(B[m[K
+[K
+[?25h[?25l[1;41r[H[3L[1;43r[H[96m;format-offset =(B[m[K
+[K
+[96m; Enables pseudo-transparency for the bar(B[m[K
+
+
+
+[?25h[?25l[1;41r[H[3L[1;43r[H[96m;format-spacing =(B[m[K
+[96m;format-padding =(B[m[K
+[96m;format-margin =(B[m[K[7B[?25h[?25l[1;41r[H[3L[1;43r[H[96m;format-background = (B[m[K
+[96m;format-underline =(B[m[K
+[96m;format-overline =(B[m[K[10B[?25h[?25l[1;41r[H[3L[1;43r[H[K
+[96m; Define fallback values used by all module formats(B[m[K
+[96m;format-foreground = (B[m[K[13B[?25h[?25l[1;41r[H[3L[1;43r[H[38;5;121mcompositing-overline(B[m =[95m over(B[m[K
+[38;5;121mcompositing-underline(B[m =[95m over(B[m[K
+[38;5;121mcompositing-border(B[m =[95m over(B[m[K[16B[?25h[?25l[1;41r[H[4L[1;43r[H[96m; @see: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-operator-t(B[m[K
+[38;5;121mcompositing-background(B[m =[95m source(B[m[K
+[38;5;121mcompositing-foreground(B[m =[95m over(B[m[K[19B[?25h[?25l[1;41r[H[3L[1;43r[H[38;5;121mscreenchange-reload(B[m =[95m false(B[m[K
+[K
+[96m; Compositing operators(B[m[K[23B[?25h[?25l[1;41r[H[3L[1;43r[H[96m;throttle-input-for = 30(B[m[K
+[K
+[96m; Reload upon receiving XCB_RANDR_SCREEN_CHANGE_NOTIFY events(B[m[K[26B[?25h[?25l[1;41r[H[4L[1;43r[H[38;5;121mthrottle-output-for(B[m =[95m 10(B[m[K
+[K
+[96m; Time in milliseconds that the input handler will wait between processing events(B[m[K[29B[?25h[?25l[1;41r[H[3L[1;43r[H[96m; the bar would appear sluggish so we continue if timeout(B[m[K
+[96m; expires or limit is reached.(B[m[K
+[38;5;121mthrottle-output(B[m =[95m 5(B[m[K[33B[?25h[?25l[1;41r[H[5L[1;43r[H[96m;(B[m[K
+[96m; For example if 5 modules emit an update event at the same time, we really(B[m[K
+[96m; just care about the last one. But if we wait too long for events to swallow(B[m[K[36B[?25h[?25l[1;41r[H[5M[1;43r[37;1H[94m~[K
+~[K
+~[K
+~[K
+~[K[5A[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[8A[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[94m~[K
+~[K
+~[K
+~[K[12A[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[15A[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[94m~[K
+~[K
+~[K[18A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mscreenchange-reload(B[m =[95m false(B[m[K
+[K
+[96m; Compositing operators(B[m[K[23B[?25h[?25l[1;41r[H[3L[1;43r[H[96m;throttle-input-for = 30(B[m[K
+[K
+[96m; Reload upon receiving XCB_RANDR_SCREEN_CHANGE_NOTIFY events(B[m[K[26B[?25h[?25l[1;41r[H[4L[1;43r[H[38;5;121mthrottle-output-for(B[m =[95m 10(B[m[K
+[K
+[96m; Time in milliseconds that the input handler will wait between processing events(B[m[K[29B[?25h[?25l[1;41r[H[3L[1;43r[H[96m; the bar would appear sluggish so we continue if timeout(B[m[K
+[96m; expires or limit is reached.(B[m[K
+[38;5;121mthrottle-output(B[m =[95m 5(B[m[K[33B[?25h[?25l[1;41r[H[5L[1;43r[H[96m;(B[m[K
+[96m; For example if 5 modules emit an update event at the same time, we really(B[m[K
+[96m; just care about the last one. But if we wait too long for events to swallow(B[m[K[36B[?25h[?25l[1;41r[H[3L[1;43r[H[96m; The throttle settings lets the eventloop swallow up til X events(B[m[K
+[96m; if they happen within Y millisecond after first event was received.
+; This is done to prevent flood of update event.(B[m[K[42;54H(B[0;1;7m0,1          98%[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m;; Application Settings(B[m[K
+[K
+[38;5;224m[settings](B[m[K[42;53H(B[0;1;7m87,1          97[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K[42;54H(B[0;1;7m4,1          96[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m;;scroll-down = i3wm-wsprev(B[m[K
+[96m;;scroll-up = i3-msg workspace next_on_output(B[m[K
+[96m;;scroll-down = i3-msg workspace prev_on_output(B[m[K[42;54H(B[0;1;7m1,1          95[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[K
+[96m;i3(B[m[K
+[96m;;scroll-up = i3wm-wsnext(B[m[K[42;53H(B[0;1;7m78,0-1        94[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m;;scroll-down = bspwm-deskprev(B[m[K
+[96m;;scroll-up = bspc desktop -f prev.local(B[m[K
+[96m;;scroll-down = bspc desktop -f next.local(B[m[K[42;54H(B[0;1;7m5,1          92[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[K
+[96m; bspwm(B[m[K
+[96m;;scroll-up = bspwm-desknext(B[m[K[42;54H(B[0;1;7m2,1          91[A[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mcursor-scroll(B[m =[95m (B[m[K
+[K
+[96m;; WM Workspace Specific(B[m[K[42;54H(B[0;1;7m0,0-1        90[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; - pointer   : Typically in the form of a hand(B[m[K
+[96m; - ns-resize : Up and down arrows, can be used to indicate scrolling
+(B[m[38;5;121mcursor-click(B[m =[95m (B[m[K[42;53H(B[0;1;7m67,0-1        89[A[?25h[?25l[1;41r[H(B[m[4L[1;43r[H[96m; Requires polybar to be built with xcursor support (xcb-util-cursor)
+; Possible values are:(B[m[K
+[96m; - default   : The default pointer as before, can also be an empty string (default)(B[m[K[42;54H(B[0;1;7m4,0-1        88[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mdouble-click-middle(B[m =[K
+[38;5;121mdouble-click-right(B[m =[K
+[K[42;54H(B[0;1;7m1,1          87[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mscroll-up(B[m =[K
+[38;5;121mscroll-down(B[m =[K
+[38;5;121mdouble-click-left(B[m =[K[41;67H[94m@@@[42;53H(B[0;1;7m58,1          86[3A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mclick-left(B[m =[95m (B[m[K
+[38;5;121mclick-middle(B[m =[95m (B[m[K
+[38;5;121mclick-right(B[m =[K[42;54H(B[0;1;7m7,1          85[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[K
+[96m; Fallback click handlers that will be called if(B[m[K
+[96m; there's no matching module handler found.(B[m[K[42;54H(B[0;1;7m4,1          84[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Enable support for inter-process messaging(B[m[K
+[96m; See the Messaging wiki page for more details.(B[m[K
+[38;5;121menable-ipc(B[m =[95m true(B[m[K[42;54H(B[0;1;7m1,1          83[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; This only affects scalable fonts(B[m[K
+[96m; dpi = (B[m[K
+[K[42;53H(B[0;1;7m48,0-1        82[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mwm-restack(B[m =[95m bspwm(B[m[K
+[K
+[96m; Set a DPI values used when rendering text(B[m[K[42;54H(B[0;1;7m5,1          81[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Currently supported WM's:(B[m[K
+[96m;   bspwm(B[m[K
+[96m;   i3 (requires: `override-redirect = true`)(B[m[K[42;54H(B[0;1;7m2,0-1        79[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Fixes the issue where the bar is being drawn(B[m[K
+[96m; on top of fullscreen window's(B[m[K
+[96m;(B[m[K[42;53H(B[0;1;7m39,1          78[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Restack the bar window and put it above the(B[m[K
+[96m; selected window manager's root(B[m[K
+[96m;(B[m[K[42;54H(B[0;1;7m6,0-1        77[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Scale factor for tray clients(B[m[K
+[38;5;121mtray-scale(B[m =[95m 1.0(B[m[K
+[K[42;54H(B[0;1;7m3,1          76[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Pad the sides of each tray icon(B[m[K
+[38;5;121mtray-padding(B[m =[95m 0(B[m[K
+[K[42;54H(B[0;1;7m0,1          75[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mtray-offset-x(B[m =[95m 0(B[m[K
+[38;5;121mtray-offset-y(B[m =[95m 0(B[m[K
+[K[42;53H(B[0;1;7m28,1          74[A[?25h[?25l[1;41r[H(B[m[4L[1;43r[H[38;5;121mtray-background(B[m =[95m ${color.background}(B[m[K
+[K
+[96m; Tray offset defined as pixel value (e.g. 35) or percentage (e.g. 50%)(B[m[K[42;54H(B[0;1;7m4,1          72[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; ARGB color (e.g. #f00, #ff992a, #ddff1023)(B[m[K
+[96m; By default the tray container will use the bar(B[m[K
+[96m; background color.(B[m[K[42;54H(B[0;1;7m1,1          71[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mtray-maxsize(B[m =[95m 16(B[m[K
+[K
+[96m; Background color for the tray container (B[m[K[42;53H(B[0;1;7m18,1          70[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mtray-detached(B[m =[95m false(B[m[K
+[K
+[96m; Tray icon max size(B[m[K[42;54H(B[0;1;7m5,0-1        69[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[K
+[96m; If true, the bar will not shift its(B[m[K
+[96m; contents when the tray changes(B[m[K[42;54H(B[0;1;7m2,1          67[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m;   right(B[m[K
+[96m;   none(B[m[K
+[38;5;121mtray-position(B[m =[95m none(B[m[K[42;53H(B[0;1;7m09,1          66[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Available positions:(B[m[K
+[96m;   left(B[m[K
+[96m;   center(B[m[K[42;54H(B[0;1;7m6,1          65[1;41r[H(B[m[3L[1;43r[H[96m; If empty or undefined, tray support will be disabled(B[m[K
+[96m; NOTE: A center aligned tray will cover center aligned modules(B[m[K
+[96m;(B[m[K[42;54H(B[0;1;7m3,1          64[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mlocale(B[m =[95m (B[m[K
+[K
+[96m; Position of the system tray window(B[m[K[42;54H(B[0;1;7m0,1          63[1;41r[H(B[m[3L[1;43r[H[K
+[96m; Locale used to localize various module data (e.g. date)(B[m[K
+[96m; Expects a valid libc locale, for example: sv_SE.UTF-8(B[m[K[42;52H(B[0;1;7m197,1          62[A[?25h[?25l[1;41r[H(B[m[4L[1;43r[H[96m; will be created from the following template: polybar-[BAR]_[MONITOR](B[m[K
+[96m; NOTE: The placeholders are not available for custom values(B[m[K
+[38;5;121mwm-name(B[m =[95m (B[m[K[42;54H(B[0;1;7m3,0-1        60[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[K
+[96m; Value to be used to set the WM_NAME atom(B[m[K
+[96m; If the value is empty or undefined, the atom value(B[m[K[42;54H(B[0;1;7m0,0-1        59[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[K
+[96m; Opacity value between 0.0 and 1.0 used on fade in/out(B[m[K
+[38;5;121mdim-value(B[m =[95m 1.0(B[m[K[42;53H(B[0;1;7m87,1          58[A[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[K
+[96m; The separator will be inserted between the output of each module(B[m[K
+[38;5;121mseparator(B[m =[K[42;54H(B[0;1;7m5,1          57[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mmodules-right(B[m =[95m brightnessctl alsa battery network date sysmenu(B[m[K
+[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K[42;54H(B[0;1;7m2,1          56[1;41r[H(B[m[3L[1;43r[H[K
+[38;5;121mmodules-left(B[m =[95m launcher workspaces term files browser settings(B[m[K
+[38;5;121mmodules-center(B[m =[95m xwindow(B[m[K[42;53H(B[0;1;7m79,1          54[1;41r[H(B[m[3L[1;43r[H[96m;   modules-left = cpu ram(B[m[K
+[96m;   modules-center = xwindow xbacklight(B[m[K
+[96m;   modules-right = ipc clock(B[m[K[42;54H(B[0;1;7m6,1          53[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mfont-1(B[m =[95m "Material\-Design\-Iconic\-Font:size=13;4"(B[m[K
+[K
+[96m; Modules are added to one of the available blocks(B[m[K[42;54H(B[0;1;7m3,0-1        52[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; See the Fonts wiki page for more details(B[m[K
+[K
+[38;5;121mfont-0(B[m =[95m "Fantasque Sans Mono:pixelsize=12;3"(B[m[K[42;54H(B[0;1;7m0,1          51[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m;   font-1 = MaterialIcons:size=10(B[m[K
+[96m;   font-2 = Termsynu:size=8;-1(B[m[K
+[96m;   font-3 = FontAwesome:size=10(B[m[K[42;53H(B[0;1;7m67,1          50[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Fonts are defined using <font-name>;<vertical-offset>(B[m[K
+[96m; Font names are specified using a fontconfig pattern.(B[m[K
+[96m;   font-0 = NotoSans-Regular:size=8;2(B[m[K[42;54H(B[0;1;7m4,1          49[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K[42;54H(B[0;1;7m1,1          47[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m;   module-margin-{left,right}(B[m[K
+[38;5;121mmodule-margin-left(B[m =[95m 1(B[m[K
+[38;5;121mmodule-margin-right(B[m =[95m 1(B[m[K[42;53H(B[0;1;7m58,0-1        46[1;41r[H(B[m[3L[1;43r[H[K
+[96m; Number of spaces to add before/after each module(B[m[K
+[96m; Individual side values can be defined using:(B[m[K[42;54H(B[0;1;7m5,1          45[A[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Individual side values can be defined using:(B[m[K
+[96m;   padding-{left,right}(B[m[K
+[38;5;121mpadding(B[m =[95m 0(B[m[K[42;54H(B[0;1;7m3,1          44[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mborder-color(B[m =[95m ${color.background}(B[m[K
+[K
+[96m; Number of spaces to add at the beginning/end of the bar(B[m[K[42;54H(B[0;1;7m0,1          43[1;41r[H(B[m[3L[1;43r[H[96m; following horizontal space on the bar:(B[m[K
+[96m;   width - border-right-size - border-left-size(B[m[K
+[38;5;121mborder-size(B[m =[95m 3(B[m[K[42;53H(B[0;1;7m47,1          42[A[?25h[?25l[1;41r[H(B[m[5L[1;43r[H[96m;   height + border-top-size + border-bottom-size(B[m[K
+[96m; Meanwhile the effective window width is defined entirely by the width key and(B[m[K
+[96m; the border is placed withing this area. So you effectively only have the(B[m[K[42;54H(B[0;1;7m2,1          40[A[?25h[?25l[1;41r[H(B[m[4L[1;43r[H[96m;   border-{left,top,right,bottom}-color(B[m[K
+[96m; The top and bottom borders are added to the bar height, so the effective(B[m[K
+[96m; window height is:(B[m[K[42;53H(B[0;1;7m38,1          39[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Values applied to all borders(B[m[K
+[96m; Individual side values can be defined using:(B[m[K
+[96m;   border-{left,top,right,bottom}-size(B[m[K[42;54H(B[0;1;7m5,0-1        38[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mline-size(B[m =[95m 2(B[m[K
+[38;5;121mline-color(B[m =[95m ${color.primary}(B[m[K
+[K[42;54H(B[0;1;7m2,0-1        36[1;41r[H(B[m[3L[1;43r[H[96m; Individual values can be defined using:(B[m[K
+[96m;   {overline,underline}-size(B[m[K
+[96m;   {overline,underline}-color(B[m[K[42;53H(B[0;1;7m29,1          35[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mradius-bottom(B[m =[95m 0.0(B[m[K
+[K
+[96m; Under-/overline pixel size and argb color(B[m[K[42;54H(B[0;1;7m6,1          34[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Individual top/bottom values can be defined using:(B[m[K
+[96m;   radius-{top,bottom}(B[m[K
+[38;5;121mradius-top(B[m =[95m 0.0(B[m[K[42;54H(B[0;1;7m3,1          33[1;41r[H(B[m[4L[1;43r[H[96m; Value used for drawing rounded corners(B[m[K
+[96m; Note: This shouldn't be used together with border-size because the border (B[m[K
+[96m; doesn't get rounded(B[m[K[42;53H(B[0;1;7m19,1          32[1;41r[H(B[m[3L[1;43r[H[96m;   background-[0-9]+ = #aarrggbb(B[m[K
+[96m;;background-0 = (B[m[K
+[K[42;54H(B[0;1;7m6,0-1        30[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mforeground(B[m =[95m ${color.foreground}(B[m[K
+[K
+[96m; Background gradient (vertical steps)(B[m[K[42;54H(B[0;1;7m3,1          29[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mbackground(B[m =[95m ${color.background}(B[m[K
+[K
+[96m; Foreground ARGB color (e.g. #f00, #ff992a, #ddff1023)(B[m[K[42;54H(B[0;1;7m0,1          28[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121moffset-y(B[m =[95m 0%(B[m[K
+[K
+[96m; Background ARGB color (e.g. #f00, #ff992a, #ddff1023)(B[m[K[42;53H(B[0;1;7m07,1          27[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; 50%:-10, this will result in an offset in the x or y direction (B[m[K
+[96m; of 50% minus 10 pixels(B[m[K
+[38;5;121moffset-x(B[m =[95m 0%(B[m[K[42;54H(B[0;1;7m5,1          26[A[A[?25h[?25l[1;41r[H(B[m[4L[1;43r[H[K
+[96m; Offset defined as pixel value (e.g. 35) or percentage (e.g. 50%)(B[m[K
+[96m; the percentage can optionally be extended with a pixel offset like so:(B[m[K[42;54H(B[0;1;7m2,1          25[A[A[?25h[?25l[1;41r[H(B[m[4L[1;43r[H[96m; 50%:-10, this will result in a width or height of 50% minus 10 pixels(B[m[K
+[38;5;121mwidth(B[m =[95m 100%(B[m[K
+[38;5;121mheight(B[m =[95m 40(B[m[K[42;52H(B[0;1;7m99,1           23[A[?25h[?25l[1;41r[H(B[m[5L[1;43r[H[K
+[96m; Dimension defined as pixel value (e.g. 35) or percentage (e.g. 50%),(B[m[K
+[96m; the percentage can optionally be extended with a pixel offset like so:(B[m[K[42;53H(B[0;1;7m4,1           22[A[?25h[?25l[1;41r[H(B[m[4L[1;43r[H[96m; Prefer fixed center position for the `modules-center` block(B[m[K
+[96m; When false, the center position will be based on the size of the other blocks.(B[m[K
+[38;5;121mfixed-center(B[m =[95m true(B[m[K[42;53H(B[0;1;7m0,0-1         21[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Put the bar at the bottom of the screen(B[m[K
+[38;5;121mbottom(B[m =[95m false(B[m[K
+[K[42;52H(B[0;1;7m87,1           20[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Use this to detach the bar if your WM is locking its size/position.
+(B[m[38;5;121moverride-redirect(B[m =[95m false(B[m[K
+[K[42;53H(B[0;1;7m4,1           18[A[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121mmonitor-strict(B[m =[95m false(B[m[K
+[K
+[96m; Tell the Window Manager not to configure the window.(B[m[K[42;53H(B[0;1;7m2,0-1         17[A[?25h[?25l[1;41r[H(B[m[4L[1;43r[H[K
+[96m; Require the monitor to be in connected state(B[m[K
+[96m; XRandR sometimes reports my monitor as being disconnected (when in use)(B[m[K[42;52H(B[0;1;7m78,0-1         16[A[?25h[?25l[1;41r[H(B[m[4L[1;43r[H[K
+[96m; Use the specified monitor as a fallback if the main one is not found.(B[m[K
+[38;5;121mmonitor-fallback(B[m =[K[42;53H(B[0;1;7m4,1           15[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; $ polybar -m | cut -d ':' -f 1(B[m[K
+[96m; $ xrandr -q | grep " connected" | cut -d ' ' -f1(B[m[K
+[38;5;121mmonitor(B[m =[K[42;53H(B[0;1;7m1,1           14[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;224m[bar/main](B[m[K
+[96m; Use either of the following command to list available outputs:(B[m[K
+[96m; If unspecified, the application will pick the first one it finds.(B[m[K[42;52H(B[0;1;7m68,1           13[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[K
+[96m;; Bar Settings(B[m[K
+[K[42;53H(B[0;1;7m6,1           12[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/user_modules.ini(B[m[K
+[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K[42;53H(B[0;1;7m3,1           10[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/bars.ini(B[m[K
+[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/colors.ini(B[m[K
+[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/modules.ini(B[m[K[42;53H(B[0;1;7m1,1            9[A[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m;; File Inclusion(B[m[K
+[96m; include an external file, like module file, etc.(B[m[K
+[K[41;67H[94m@@@[42;52H(B[0;1;7m59,0-1          8[A[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K[42;53H(B[0;1;7m7,1            7[A[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Adjust the _NET_WM_STRUT_PARTIAL bottom value(B[m[K
+[96m; Used for bottom aligned bars(B[m[K
+[38;5;121mmargin-top(B[m =[95m 0(B[m[K[42;53H(B[0;1;7m5,0-1          6[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Used for top aligned bars(B[m[K
+[38;5;121mmargin-bottom(B[m =[95m 0(B[m[K
+[K[42;53H(B[0;1;7m2,0-1          5[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[K
+[38;5;224m[global/wm](B[m[K
+[96m; Adjust the _NET_WM_STRUT_PARTIAL top value(B[m[K[42;52H(B[0;1;7m49,1            3[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[96m;; Global WM Settings(B[m[K[42;53H(B[0;1;7m6,1            2[A[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m;; │[1;5H░Created░By░Aditya░Shakya░@adi1090x░░░░░░░░░░░░░░░░░░░░░░░░░│(B[m[1;66H[K
+[96m;; └[2;5H─[2;6H─[2;7H─[2;8H─[2;9H─[2;10H─[2;11H─[2;12H─[2;13H─[2;14H─[2;15H─[2;16H─[2;17H─[2;18H─[2;19H─[2;20H─[2;21H─[2;22H─[2;23H─[2;24H─[2;25H─[2;26H─[2;27H─[2;28H─[2;29H─[2;30H─[2;31H─[2;32H─[2;33H─[2;34H─[2;35H─[2;36H─[2;37H─[2;38H─[2;39H─[2;40H─[2;41H─[2;42H─[2;43H─[2;44H─[2;45H─[2;46H─[2;47H─[2;48H─[2;49H─[2;50H─[2;51H─[2;52H─[2;53H─[2;54H─[2;55H─[2;56H─[2;57H─[2;58H─[2;59H─[2;60H─[2;61H─[2;62H─[2;63H─[2;64H─[2;65H┘(B[m[2;66H[K
+[K[42;53H(B[0;1;7m4,0-1          1[A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m;; │[1;5H░█[1;7H▀[1;8H█[1;9H░█[1;11H▀[1;12H█[1;13H░█[1;15H░░░█[1;19H░█[1;21H░█[1;23H▀[1;24H▄[1;25H░█[1;27H▀[1;28H█[1;29H░█[1;31H▀[1;32H▄[1;33H░░░░░░░░░█[1;43H▀[1;44H▀[1;45H░█[1;47H▀[1;48H█[1;49H░█[1;51H▀[1;52H█[1;53H░█[1;55H▀[1;56H▀[1;57H░▀[1;59H█[1;60H▀[1;61H░█[1;63H▀[1;64H▀[1;65H│(B[m[1;66H[K
+[96m;; │[2;5H░█[2;7H▀[2;8H▀[2;9H░█[2;11H░█[2;13H░█[2;15H░░░░█[2;20H░░█[2;23H▀[2;24H▄[2;25H░█[2;27H▀[2;28H█[2;29H░█[2;31H▀[2;32H▄[2;33H░░░░▀[2;38H░░░░█[2;43H░░░█[2;47H░█[2;49H░█[2;51H░█[2;53H░█[2;55H▀[2;56H▀[2;57H░░█[2;60H░░█[2;63H░█[2;65H│(B[m[2;66H[K
+[96m;; │[3;5H░▀[3;7H░░░▀[3;11H▀[3;12H▀[3;13H░▀[3;15H▀[3;16H▀[3;17H░░▀[3;20H░░▀[3;23H▀[3;24H░░▀[3;27H░▀[3;29H░▀[3;31H░▀[3;33H░░░░▀[3;38H░░░░▀[3;43H▀[3;44H▀[3;45H░▀[3;47H▀[3;48H▀[3;49H░▀[3;51H░▀[3;53H░▀[3;55H░░░▀[3;59H▀[3;60H▀[3;61H░▀[3;63H▀[3;64H▀[3;65H│(B[m[3;66H[K[41;67H[94m@@@[42;53H(B[0;1;7m1,0-1          0[A[A[?25h[?25l[1;41r[H(B[m[L[1;43r[H[96m;; ┌[1;5H─[1;6H─[1;7H─[1;8H─[1;9H─[1;10H─[1;11H─[1;12H─[1;13H─[1;14H─[1;15H─[1;16H─[1;17H─[1;18H─[1;19H─[1;20H─[1;21H─[1;22H─[1;23H─[1;24H─[1;25H─[1;26H─[1;27H─[1;28H─[1;29H─[1;30H─[1;31H─[1;32H─[1;33H─[1;34H─[1;35H─[1;36H─[1;37H─[1;38H─[1;39H─[1;40H─[1;41H─[1;42H─[1;43H─[1;44H─[1;45H─[1;46H─[1;47H─[1;48H─[1;49H─[1;50H─[1;51H─[1;52H─[1;53H─[1;54H─[1;55H─[1;56H─[1;57H─[1;58H─[1;59H─[1;60H─[1;61H─[1;62H─[1;63H─[1;64H─[1;65H┐(B[m[1;66H[K[42;67H(B[0;1;7mTop[A[?25h[?25l[43;59H(B[m/         [A[A[?25h[?25l
+
+[J/]112[2 q[?1002l[?1006l[?25h[?25l[43;1H ]112[2 q[?1002h[?1006h[A[A[?25h[?25l[43;59H:[A[A[?25h[?25l[43;59H [43;1H:]112[2 q[?1002l[?1006l[?25h[?25l[43;1H ]112[2 q[?1002h[?1006h[A[A[?25h[?25l[43;59H/[A[A[?25h[?25l[43;59H [43;1H/]112[2 q[?1002l[?1006l[?25h[?25lB[?25h[?25l[H[38;5;121mfixed-center(B[m =[95m true(B[m[46X
+[65X[3;2H[96m Dimension defined as pixel value (e.g. 35) or percentage (e.g. 50%),(B[m[64X
+[96m the percentage can optionally be extended with a pixel offset like so:(B[m[62X
+[96m; 50%:-10, this will result in a width or height of 50% minus 10 pixels(B[m[44X
+[38;5;121mwidth(B[m =[95m 100%
+(B[m[38;5;121mheight(B[m =[95m 40(B[m[10X
+
+[96m; Offset defined as pixel value (e.g. 35) or percentage (e.g. 50%)[13;3Hthe percentage can optionally be extended with a pixel offset like so:(B[m[24X
+[96m; 50%:-10, this will result in an offset in the x or y direction 
+; of 50% minus 10 pixels
+(B[m[38;5;121moffset-x(B[m =[95m 0%(B[m[34X
+[38;5;121moffset-y(B[m =[95m 0%(B[m[17X
+[14X
+[96m; (B[0;7m[96mB(B[m[96mackground ARG(B[m[30m[103mB(B[m[96m color (e.g. #f00, #ff992a, #ddff1023)
+(B[m[38;5;121mbackground(B[m =[95m ${color.background}(B[m[14X[23;2H[96m Foreground ARG(B[m[30m[103mB(B[m[96m color (e.g. #f00, #ff992a, #ddff1023)
+(B[m[38;5;121mforeground(B[m =[95m ${color.foreground}(B[m[18X
+
+[96m; (B[m[30m[103mB(B[m[96mackground gradient (vertical steps)(B[m[12X
+[96m;   background-[0-9]+ = #aarrggbb(B[m[19X
+[96m;;background-0 = (B[m[36X
+[58X
+[96m; Value used for drawing rounded corners[31;2H Note: This shouldn't be used together with border-size because the border [33;2H doesn't get rounded
+; Individual top/bottom values can be defined using:
+;   radius-{top,bottom}
+(B[m[38;5;121mradius-top(B[m =[95m 0.0(B[m[48X
+[38;5;121mradius-bottom(B[m =[95m 0.0(B[m[48X
+[32X[39;3H[96mUnder-/overline pixel size and argb color(B[m[7X
+[96m; Individual values can be defined using:
+;   {overline,underline}-size[42;52H(B[0;1;7m73,3           22%[43;3H[?25h[?25l(B[mr[?25h[?25l[H[96m;; ┌[1;5H─[1;6H─[1;7H─[1;8H─[1;9H─[1;10H─[1;11H─[1;12H─[1;13H─[1;14H─[1;15H─[1;16H─[1;17H─[1;18H─[1;19H─[1;20H─[1;21H─[1;22H─[1;23H─[1;24H─[1;25H─[1;26H─[1;27H─[1;28H─[1;29H─[1;30H─[1;31H─[1;32H─[1;33H─[1;34H─[1;35H─[1;36H─[1;37H─[1;38H─[1;39H─[1;40H─[1;41H─[1;42H─[1;43H─[1;44H─[1;45H─[1;46H─[1;47H─[1;48H─[1;49H─[1;50H─[1;51H─[1;52H─[1;53H─[1;54H─[1;55H─[1;56H─[1;57H─[1;58H─[1;59H─[1;60H─[1;61H─[1;62H─[1;63H─[1;64H─[1;65H┐[2;1H;; │[2;5H░█[2;7H▀[2;8H█[2;9H░█[2;11H▀[2;12H█[2;13H░█[2;15H░░░█[2;19H░█[2;21H░█[2;23H▀[2;24H▄[2;25H░█[2;27H▀[2;28H█[2;29H░█[2;31H▀[2;32H▄[2;33H░░░░░░░░░█[2;43H▀[2;44H▀[2;45H░█[2;47H▀[2;48H█[2;49H░█[2;51H▀[2;52H█[2;53H░█[2;55H▀[2;56H▀[2;57H░▀[2;59H█[2;60H▀[2;61H░█[2;63H▀[2;64H▀[2;65H│[3;2H; │[3;5H░█[3;7H▀[3;8H▀[3;9H░█[3;11H░█[3;13H░█[3;15H░░░░█[3;20H░░█[3;23H▀[3;24H▄[3;25H░█[3;27H▀[3;28H█[3;29H░█[3;31H▀[3;32H▄[3;33H░░░░▀[3;38H░░░░█[3;43H░░░█[3;47H░█[3;49H░█[3;51H░█[3;53H░█[3;55H▀[3;56H▀[3;57H░░█[3;60H░░█[3;63H░█[3;65H│(B[m[3;66H[K
+[96m;; │[4;5H░▀[4;7H░░░▀[4;11H▀[4;12H▀[4;13H░▀[4;15H▀[4;16H▀[4;17H░░▀[4;20H░░▀[4;23H▀[4;24H░░▀[4;27H░▀[4;29H░▀[4;31H░▀[4;33H░░░░▀[4;38H░░░░▀[4;43H▀[4;44H▀[4;45H░▀[4;47H▀[4;48H▀[4;49H░▀[4;51H░▀[4;53H░▀[4;55H░░░▀[4;59H▀[4;60H▀[4;61H░▀[4;63H▀[4;64H▀[4;65H│[5;2H; │[5;5H░Created░By░Aditya░Shakya░@adi1090x░░░░░░░░░░░░░░░░░░░░░░░░░│(B[m[5;66H[K
+[96m;; └[6;5H─[6;6H─[6;7H─[6;8H─[6;9H─[6;10H─[6;11H─[6;12H─[6;13H─[6;14H─[6;15H─[6;16H─[6;17H─[6;18H─[6;19H─[6;20H─[6;21H─[6;22H─[6;23H─[6;24H─[6;25H─[6;26H─[6;27H─[6;28H─[6;29H─[6;30H─[6;31H─[6;32H─[6;33H─[6;34H─[6;35H─[6;36H─[6;37H─[6;38H─[6;39H─[6;40H─[6;41H─[6;42H─[6;43H─[6;44H─[6;45H─[6;46H─[6;47H─[6;48H─[6;49H─[6;50H─[6;51H─[6;52H─[6;53H─[6;54H─[6;55H─[6;56H─[6;57H─[6;58H─[6;59H─[6;60H─[6;61H─[6;62H─[6;63H─[6;64H─[6;65H┘(B[m[7;1H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m
+[12X
+[96m;; Global WM Settings
+
+(B[m[38;5;224m[global/wm](B[m[55X[13;3H[96mAdjust the _NET_WM_STRUT_PARTIAL top value(B[m[K
+[96m; Used for top aligned bars
+(B[m[38;5;121mmargin-bottom(B[m =[95m 0(B[m[48X
+[24X
+[96m; Adjust the _NET_WM_STRUT_PARTIAL bottom value
+; Used for bottom aligned bars
+(B[m[38;5;121mmargin-top(B[m =[95m 0(B[m
+[55X
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_[23;2H; File Inclusion(B[m[38X
+[96m; include an external file, like module file, etc.
+
+(B[m[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/bars.ini
+(B[m[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/colors.ini
+(B[m[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/modules.ini
+(B[m[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/user_modules.ini(B[m
+[40X[31;2H[96m; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[7X[33;2H[96m; Bar Settings(B[m[6X
+[52X
+[38;5;224m[bar/main](B[m[13X
+[96m; Use either of the following command to list available outputs:
+; If unspecified, the application will pick the first one it finds.
+; $ polybar -m | cut -d ':' -f 1[39;3H$ xrandr -q | grep " connected" | cut -d ' ' -f1
+(B[m[38;5;121mmonitor(B[m =[32X
+[29X[42;52H(B[0;1;7m41,0-1         Top[43;4H[?25h[?25l(B[mi[?25h[?25l[?25h[?25l [?25h[?25l[?25h[?25l [?25h[?25l[H[38;5;121mfixed-center(B[m =[95m true(B[m[46X
+[65X[3;2H[96m Dimension defined as pixel value (e.g. 35) or percentage (e.g. 50%),(B[m[64X
+[96m the percentage can optionally be extended with a pixel offset like so:(B[m[62X
+[96m; 50%:-10, this will result in a width or height of 50% minus 10 pixels(B[m[44X
+[38;5;121mwidth(B[m =[95m 100%
+(B[m[38;5;121mheight(B[m =[95m 40(B[m[10X
+
+[96m; Offset defined as pixel value (e.g. 35) or percentage (e.g. 50%)[13;3Hthe percentage can optionally be extended with a pixel offset like so:(B[m[24X
+[96m; 50%:-10, this will result in an offset in the x or y direction 
+; of 50% minus 10 pixels
+(B[m[38;5;121moffset-x(B[m =[95m 0%(B[m[34X
+[38;5;121moffset-y(B[m =[95m 0%(B[m[17X
+[14X
+[96m; (B[0;7m[96mB(B[m[96mackground ARG(B[m[30m[103mB(B[m[96m color (e.g. #f00, #ff992a, #ddff1023)
+(B[m[38;5;121mbackground(B[m =[95m ${color.background}(B[m[14X[23;2H[96m Foreground ARG(B[m[30m[103mB(B[m[96m color (e.g. #f00, #ff992a, #ddff1023)
+(B[m[38;5;121mforeground(B[m =[95m ${color.foreground}(B[m[18X
+
+[96m; (B[m[30m[103mB(B[m[96mackground gradient (vertical steps)(B[m[12X
+[96m;   background-[0-9]+ = #aarrggbb(B[m[19X
+[96m;;background-0 = (B[m[36X
+[58X
+[96m; Value used for drawing rounded corners[31;2H Note: This shouldn't be used together with border-size because the border [33;2H doesn't get rounded
+; Individual top/bottom values can be defined using:
+;   radius-{top,bottom}
+(B[m[38;5;121mradius-top(B[m =[95m 0.0(B[m[48X
+[38;5;121mradius-bottom(B[m =[95m 0.0(B[m[48X
+[32X[39;3H[96mUnder-/overline pixel size and argb color(B[m[7X
+[96m; Individual values can be defined using:
+;   {overline,underline}-size[42;52H(B[0;1;7m73,3           22%[43;3H[?25h[?25l(B[m [?25h[?25l[H[96m;; ┌[1;5H─[1;6H─[1;7H─[1;8H─[1;9H─[1;10H─[1;11H─[1;12H─[1;13H─[1;14H─[1;15H─[1;16H─[1;17H─[1;18H─[1;19H─[1;20H─[1;21H─[1;22H─[1;23H─[1;24H─[1;25H─[1;26H─[1;27H─[1;28H─[1;29H─[1;30H─[1;31H─[1;32H─[1;33H─[1;34H─[1;35H─[1;36H─[1;37H─[1;38H─[1;39H─[1;40H─[1;41H─[1;42H─[1;43H─[1;44H─[1;45H─[1;46H─[1;47H─[1;48H─[1;49H─[1;50H─[1;51H─[1;52H─[1;53H─[1;54H─[1;55H─[1;56H─[1;57H─[1;58H─[1;59H─[1;60H─[1;61H─[1;62H─[1;63H─[1;64H─[1;65H┐[2;1H;; │[2;5H░█[2;7H▀[2;8H█[2;9H░█[2;11H▀[2;12H█[2;13H░█[2;15H░░░█[2;19H░█[2;21H░█[2;23H▀[2;24H▄[2;25H░█[2;27H▀[2;28H█[2;29H░█[2;31H▀[2;32H▄[2;33H░░░░░░░░░█[2;43H▀[2;44H▀[2;45H░█[2;47H▀[2;48H█[2;49H░█[2;51H▀[2;52H█[2;53H░█[2;55H▀[2;56H▀[2;57H░▀[2;59H█[2;60H▀[2;61H░█[2;63H▀[2;64H▀[2;65H│[3;2H; │[3;5H░█[3;7H▀[3;8H▀[3;9H░█[3;11H░█[3;13H░█[3;15H░░░░█[3;20H░░█[3;23H▀[3;24H▄[3;25H░█[3;27H▀[3;28H█[3;29H░█[3;31H▀[3;32H▄[3;33H░░░░▀[3;38H░░░░█[3;43H░░░█[3;47H░█[3;49H░█[3;51H░█[3;53H░█[3;55H▀[3;56H▀[3;57H░░█[3;60H░░█[3;63H░█[3;65H│(B[m[3;66H[K
+[96m;; │[4;5H░▀[4;7H░░░▀[4;11H▀[4;12H▀[4;13H░▀[4;15H▀[4;16H▀[4;17H░░▀[4;20H░░▀[4;23H▀[4;24H░░▀[4;27H░▀[4;29H░▀[4;31H░▀[4;33H░░░░▀[4;38H░░░░▀[4;43H▀[4;44H▀[4;45H░▀[4;47H▀[4;48H▀[4;49H░▀[4;51H░▀[4;53H░▀[4;55H░░░▀[4;59H▀[4;60H▀[4;61H░▀[4;63H▀[4;64H▀[4;65H│[5;2H; │[5;5H░Created░By░Aditya░Shakya░@adi1090x░░░░░░░░░░░░░░░░░░░░░░░░░│(B[m[5;66H[K
+[96m;; └[6;5H─[6;6H─[6;7H─[6;8H─[6;9H─[6;10H─[6;11H─[6;12H─[6;13H─[6;14H─[6;15H─[6;16H─[6;17H─[6;18H─[6;19H─[6;20H─[6;21H─[6;22H─[6;23H─[6;24H─[6;25H─[6;26H─[6;27H─[6;28H─[6;29H─[6;30H─[6;31H─[6;32H─[6;33H─[6;34H─[6;35H─[6;36H─[6;37H─[6;38H─[6;39H─[6;40H─[6;41H─[6;42H─[6;43H─[6;44H─[6;45H─[6;46H─[6;47H─[6;48H─[6;49H─[6;50H─[6;51H─[6;52H─[6;53H─[6;54H─[6;55H─[6;56H─[6;57H─[6;58H─[6;59H─[6;60H─[6;61H─[6;62H─[6;63H─[6;64H─[6;65H┘(B[m[7;1H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m
+[12X
+[96m;; Global WM Settings
+
+(B[m[38;5;224m[global/wm](B[m[55X[13;3H[96mAdjust the _NET_WM_STRUT_PARTIAL top value(B[m[K
+[96m; Used for top aligned bars
+(B[m[38;5;121mmargin-bottom(B[m =[95m 0(B[m[48X
+[24X
+[96m; Adjust the _NET_WM_STRUT_PARTIAL bottom value
+; Used for bottom aligned bars
+(B[m[38;5;121mmargin-top(B[m =[95m 0(B[m
+[55X
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_[23;2H; File Inclusion(B[m[38X
+[96m; include an external file, like module file, etc.
+
+(B[m[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/bars.ini
+(B[m[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/colors.ini
+(B[m[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/modules.ini
+(B[m[38;5;121minclude-file(B[m =[95m ~/.config/polybar/material/user_modules.ini(B[m
+[40X[31;2H[96m; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[7X[33;2H[96m; Bar Settings(B[m[6X
+[52X
+[38;5;224m[bar/main](B[m[13X
+[96m; Use either of the following command to list available outputs:
+; If unspecified, the application will pick the first one it finds.
+; $ polybar -m | cut -d ':' -f 1[39;3H$ xrandr -q | grep " connected" | cut -d ' ' -f1
+(B[m[38;5;121mmonitor(B[m =[32X
+[29X[42;52H(B[0;1;7m41,0-1         Top[43;2H[?25h[?25l[43;1H(B[m ]112[2 q[?1002h[?1006h[A[A[?25h[?25l[43;59H~@k[A[A[?25h[?25l[43;59H   [42;53H(B[0;1;7m0,9  [40;9H[?25h[?25l[43;59H(B[m~@k[40;9H[?25h[?25l[43;59H   [42;55H(B[0;1;7m8[40;8H[?25h[?25l[43;59H(B[m~@k[40;8H[?25h[?25l[43;59H   [42;55H(B[0;1;7m7[40;7H[?25h[?25l[43;59H(B[m~@k[40;7H[?25h[?25l[43;59H   [42;55H(B[0;1;7m6[40;6H[?25h[?25l[43;59H(B[m~@k[40;6H[?25h[?25l[43;59H   [42;55H(B[0;1;7m5[40;5H[?25h[?25l[43;59H(B[m:[40;5H[?25h[?25l[43;59H [43;1H:]112[2 q[?1002l[?1006l[?25h[?25lq[?25h[?25l[43;1H[?25h[?25l]112[2 q[?1002h[?1006h[?25h[?25l]112[2 q[?1002l[?1006l(B[m[?25h[?1l>[>4;0m[?1049l[23;0;0t[23;0t[?2004l[?1004l[?25h[?2004h[jayasurya@JayasuryaMarasani scripts]$ nvim ~/.config/polybar/material/config.ini [C[C[C[C[1P[1P[1P[1P[1P[1P[1@m[1@o[9@dules.ini[1P[1P[1P[1P [K
+[?2004l[?1049h[22;0;0t[22;0t[?1h=[H[2J]11;?[?2004h[?u[c[?25h[?25l(B[m[H[2J[>4;2m[96m;; ┌[1;5H─[1;6H─[1;7H─[1;8H─[1;9H─[1;10H─[1;11H─[1;12H─[1;13H─[1;14H─[1;15H─[1;16H─[1;17H─[1;18H─[1;19H─[1;20H─[1;21H─[1;22H─[1;23H─[1;24H─[1;25H─[1;26H─[1;27H─[1;28H─[1;29H─[1;30H─[1;31H─[1;32H─[1;33H─[1;34H─[1;35H─[1;36H─[1;37H─[1;38H─[1;39H─[1;40H─[1;41H─[1;42H─[1;43H─[1;44H─[1;45H─[1;46H─[1;47H─[1;48H─[1;49H─[1;50H─[1;51H─[1;52H─[1;53H─[1;54H─[1;55H─[1;56H─[1;57H─[1;58H─[1;59H─[1;60H─[1;61H─[1;62H─[1;63H─[1;64H─[1;65H─[1;66H─[1;67H─[1;68H─[1;69H┐[2;1H;; │[2;5H░█[2;7H▀[2;8H█[2;9H░█[2;11H▀[2;12H█[2;13H░█[2;15H░░░█[2;19H░█[2;21H░█[2;23H▀[2;24H▄[2;25H░█[2;27H▀[2;28H█[2;29H░█[2;31H▀[2;32H▄[2;33H░░░░░░░░░█[2;43H▄[2;44H█[2;45H░█[2;47H▀[2;48H█[2;49H░█[2;51H▀[2;52H▄[2;53H░█[2;55H░█[2;57H░█[2;59H░░░█[2;63H▀[2;64H▀[2;65H░█[2;67H▀[2;68H▀[2;69H│[3;1H;; │[3;5H░█[3;7H▀[3;8H▀[3;9H░█[3;11H░█[3;13H░█[3;15H░░░░█[3;20H░░█[3;23H▀[3;24H▄[3;25H░█[3;27H▀[3;28H█[3;29H░█[3;31H▀[3;32H▄[3;33H░░░░▀[3;38H░░░░█[3;43H░█[3;45H░█[3;47H░█[3;49H░█[3;51H░█[3;53H░█[3;55H░█[3;57H░█[3;59H░░░█[3;63H▀[3;64H▀[3;65H░▀[3;67H▀[3;68H█[3;69H│[4;1H;; │[4;5H░▀[4;7H░░░▀[4;11H▀[4;12H▀[4;13H░▀[4;15H▀[4;16H▀[4;17H░░▀[4;20H░░▀[4;23H▀[4;24H░░▀[4;27H░▀[4;29H░▀[4;31H░▀[4;33H░░░░▀[4;38H░░░░▀[4;43H░▀[4;45H░▀[4;47H▀[4;48H▀[4;49H░▀[4;51H▀[4;52H░░▀[4;55H▀[4;56H▀[4;57H░▀[4;59H▀[4;60H▀[4;61H░▀[4;63H▀[4;64H▀[4;65H░▀[4;67H▀[4;68H▀[4;69H│[5;1H;; │[5;5H░Created░By░Aditya░Shakya░@adi1090x░░░░░░░░░░░░░░░░░░░░░░░░░░░░░│[6;1H;; └[6;5H─[6;6H─[6;7H─[6;8H─[6;9H─[6;10H─[6;11H─[6;12H─[6;13H─[6;14H─[6;15H─[6;16H─[6;17H─[6;18H─[6;19H─[6;20H─[6;21H─[6;22H─[6;23H─[6;24H─[6;25H─[6;26H─[6;27H─[6;28H─[6;29H─[6;30H─[6;31H─[6;32H─[6;33H─[6;34H─[6;35H─[6;36H─[6;37H─[6;38H─[6;39H─[6;40H─[6;41H─[6;42H─[6;43H─[6;44H─[6;45H─[6;46H─[6;47H─[6;48H─[6;49H─[6;50H─[6;51H─[6;52H─[6;53H─[6;54H─[6;55H─[6;56H─[6;57H─[6;58H─[6;59H─[6;60H─[6;61H─[6;62H─[6;63H─[6;64H─[6;65H─[6;66H─[6;67H─[6;68H─[6;69H┘(B[m[7;1H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[38;5;224m[module/alsa](B[m[K
+[38;5;121mtype(B[m =[95m internal/alsa(B[m[K
+[K
+[96m; Soundcard to be used(B[m[K
+[96m; Usually in the format hw:# where # is the card number(B[m[K
+[96m; You can find the different card numbers in `/proc/asound/cards`(B[m[K
+[38;5;121mmaster-soundcard(B[m =[95m default(B[m[K
+[38;5;121mspeaker-soundcard(B[m =[95m default(B[m[K
+[38;5;121mheadphone-soundcard(B[m =[95m default(B[m[K
+[K
+[96m; Name of the master, speaker and headphone mixers(B[m[K
+[96m; Use the following command to list available mixer controls:(B[m[K
+[96m; $ amixer scontrols | sed -nr "s/.*'([[:alnum:]]+)'.*/\1/p"(B[m[K
+[96m; If master, speaker or headphone-soundcard isn't the default, (B[m[K
+[96m; use `amixer -c # scontrols` instead where # is the number (B[m[K
+[96m; of the master, speaker or headphone soundcard respectively(B[m[K
+[96m;(B[m[K
+[96m; Default: Master(B[m[K
+[38;5;121mmaster-mixer(B[m =[95m Master(B[m[K
+[K
+[96m; Optionally define speaker and headphone mixers(B[m[K
+[96m; Default: none(B[m[K
+[96m;;speaker-mixer = Speaker(B[m[K
+[96m; Default: none(B[m[K
+[96m;;headphone-mixer = Headphone(B[m[K
+[K
+[96m; NOTE: This is required if headphone_mixer is defined(B[m[K
+[96m; Use the following command to list available device controls(B[m[K
+[96m; $ amixer controls | sed -r "/CARD/\!d; s/.*=([0-9]+).*name='([^']+)'.*/printf '%3.0f: %s\n' '\1' '\2'/e" | sort(B[m[K
+[96m; You may also need to use `amixer -c # controls` as above for the mixer names(B[m[K
+(B[0;1;7m~/.config/polybar/material/modules.ini             1,1            Top]112[2 q]112[2 q[?1002h[?1006h[H[?25h[?25l[?1004h[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Default: none(B[m[K
+[96m;;headphone-id = 9(B[m[K
+[K[42;52H(B[0;1;7m4,1             0%[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Use volume mapping (similar to amixer -M and alsamixer), where the increase in volume is linear to the ear(B[m[K
+[96m; Default: false(B[m[K[42;52H(B[0;1;7m7,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[H[38;5;224m[46m[(B[m[38;5;224mmodule/alsa(B[m[38;5;224m[46m][38B(B[m[96m;;mapped = true(B[m[K
+[K
+[96m; Interval for volume increase/decrease (in percent points)(B[m[K[42;52H(B[0;1;7m10,1 [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Default: 5(B[m[K
+[38;5;121minterval(B[m =[95m 1(B[m[K
+[K[42;53H(B[0;1;7m3,1            1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tags:(B[m[K
+[96m;   <label-volume> (default)(B[m[K
+[96m;   <ramp-volume>(B[m[K[42;53H(B[0;1;7m6[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <bar-volume>(B[m[K
+[38;5;121mformat-volume(B[m =[95m <ramp-volume> <label-volume>(B[m[K
+[K[42;53H(B[0;1;7m9,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tags:(B[m[K
+[96m;   <label-muted> (default)(B[m[K
+[96m;   <ramp-volume>(B[m[K[42;52H(B[0;1;7m22,1            2[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <bar-volume>(B[m[K
+[38;5;121mformat-muted(B[m =[95m <label-muted>(B[m[K
+[38;5;121mformat-muted-prefix(B[m =[95m (B[m[41;24H[K[42;53H(B[0;1;7m5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Available tokens:(B[m[K
+[96m;   %percentage% (default)(B[m[K[42;53H(B[0;1;7m8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mlabel-volume(B[m =[95m %percentage%%(B[m[K
+[K
+[96m; Available tokens:(B[m[K[42;52H(B[0;1;7m31[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %percentage% (default(B[m[K
+[38;5;121mlabel-muted(B[m =[95m " Muted"(B[m[K
+[38;5;121mlabel-muted-foreground(B[m =[95m ${color.foreground-alt}(B[m[K[42;53H(B[0;1;7m4,1            3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Only applies if <ramp-volume> is used(B[m[K
+[38;5;121mramp-volume-0(B[m =[95m (B[m[41;18H[K[42;53H(B[0;1;7m7[H[?25h[?25l[1;41r[H(B[m[5M[1;43r[37;1H[38;5;121mramp-volume-1(B[m =[95m (B[m[37;18H[K
+[38;5;121mramp-volume-2(B[m =[95m (B[m[38;18H[K
+[K
+[96m; If defined, it will replace <ramp-volume> when(B[m[K
+[96m; headphones are plugged in to `headphone_control_numid`(B[m[K[42;52H(B[0;1;7m40[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; If undefined, <ramp-volume> will be used for both(B[m[K
+[96m; Only applies if <ramp-volume> is used(B[m[K
+[38;5;121mramp-headphones-0(B[m =[95m (B[m[41;22H[K[42;53H(B[0;1;7m3,1            4[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[38;5;224m[module/backlight](B[m[K[42;53H(B[0;1;7m6,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;type = internal/xbacklight(B[m[K
+[38;5;121mtype(B[m =[95m internal/backlight(B[m[K
+[K[42;53H(B[0;1;7m9,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Use the following command to list available cards:(B[m[K
+[96m; $ ls -1 /sys/class/backlight/(B[m[K
+[96m;card = intel_backlight(B[m[K[42;52H(B[0;1;7m52[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mcard(B[m =[95m amdgpu_bl1(B[m[K
+[K
+[96m; Available tags:(B[m[K[42;53H(B[0;1;7m5,1            5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <label> (default)(B[m[K
+[96m;   <ramp>(B[m[K
+[96m;   <bar>(B[m[K[42;53H(B[0;1;7m8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mformat(B[m =[95m <ramp> <label>(B[m[K
+[K
+[96m; Available tokens:(B[m[K[42;52H(B[0;1;7m61[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %percentage% (default)(B[m[K
+[38;5;121mlabel(B[m =[95m %percentage%%(B[m[K
+[K[42;53H(B[0;1;7m4,1            6[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Only applies if <ramp> is used(B[m[K
+[38;5;121mramp-0(B[m =[95m (B[m[40;11H[K
+[38;5;121mramp-1(B[m =[95m (B[m[41;11H[K[42;53H(B[0;1;7m7,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mramp-2(B[m =[95m (B[m[39;11H[K
+[38;5;121mramp-3(B[m =[95m (B[m[40;11H[K
+[38;5;121mramp-4(B[m =[95m (B[m[41;11H[K[42;52H(B[0;1;7m70,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K[42;53H(B[0;1;7m3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;224m[module/battery](B[m[K
+[38;5;121mtype(B[m =[95m internal/battery(B[m[K
+[K[42;53H(B[0;1;7m6,1            7[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; This is useful in case the battery never reports 100% charge(B[m[K
+[38;5;121mfull-at(B[m =[95m 100(B[m[K
+[K[42;53H(B[0;1;7m9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Use the following command to list batteries and adapters:(B[m[K
+[96m; $ ls -1 /sys/class/power_supply/(B[m[K
+[38;5;121mbattery(B[m =[95m BAT0(B[m[K[42;52H(B[0;1;7m82[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121madapter(B[m =[95m AC(B[m[K
+[K
+[96m; If an inotify event haven't been reported in this many(B[m[K[42;53H(B[0;1;7m5,0-1          8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; seconds, manually poll for new values.(B[m[K
+[96m;(B[m[K
+[96m; Needed as a fallback for systems that don't report events(B[m[K[42;53H(B[0;1;7m8,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; on sysfs/procfs.(B[m[K
+[96m;(B[m[K
+[96m; Disable polling by setting the interval to 0.(B[m[K[42;52H(B[0;1;7m91[1;41r[H(B[m[3M[1;43r[39;1H[96m;(B[m[K
+[96m; Default: 5(B[m[K
+[38;5;121mpoll-interval(B[m =[95m 2(B[m[K[42;53H(B[0;1;7m4,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; see "man date" for details on how to format the time string(B[m[K
+[96m; NOTE: if you want to use syntax tags here you need to use %%{...}(B[m[K[42;53H(B[0;1;7m7,1            9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Default: %H:%M:%S(B[m[K
+[38;5;121mtime-format(B[m =[95m %H:%M(B[m[K
+[K[42;52H(B[0;1;7m100,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tags:(B[m[K
+[96m;   <label-charging> (default)(B[m[K
+[96m;   <bar-capacity>(B[m[K[42;54H(B[0;1;7m3,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <ramp-capacity>(B[m[K
+[96m;   <animation-charging>(B[m[K
+[38;5;121mformat-charging(B[m =[95m <animation-charging> <label-charging>(B[m[K[42;54H(B[0;1;7m6,1          10[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Available tags:(B[m[K
+[96m;   <label-discharging> (default)(B[m[K[42;54H(B[0;1;7m9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <bar-capacity>(B[m[K
+[96m;   <ramp-capacity>(B[m[K
+[96m;   <animation-discharging>(B[m[K[42;53H(B[0;1;7m12[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mformat-discharging(B[m =[95m <ramp-capacity> <label-discharging>(B[m[K
+[K
+[96m; Available tags:(B[m[K[42;54H(B[0;1;7m5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <label-full> (default)(B[m[K
+[96m;   <bar-capacity>(B[m[K
+[96m;   <ramp-capacity>(B[m[K[42;54H(B[0;1;7m8,1          11[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mformat-full(B[m =[95m <label-full>(B[m[K
+[38;5;121mformat-full-prefix(B[m =[95m (B[m[40;23H[K
+[K[42;53H(B[0;1;7m21[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tokens:(B[m[K
+[96m;   %percentage% (default)(B[m[K
+[96m;   %time%(B[m[K[42;54H(B[0;1;7m4,0-1[H[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; $ ls -1 /sys/class/power_supply/(B[m[K
+[38;5;121mbattery(B[m =[95m BAT0(B[m[K
+[38;5;121madapter(B[m =[95m AC(B[m[K
+[?25h[?25l[1;41r[H[3L[1;43r[H[38;5;121mfull-at(B[m =[95m 100(B[m[K
+[K
+[96m; Use the following command to list batteries and adapters:(B[m[K
+
+
+
+[?25h[?25l[1;41r[H[3M[1;43r[39;1H[38;5;121mformat-full(B[m =[95m <label-full>(B[m[K
+[38;5;121mformat-full-prefix(B[m =[95m (B[m[40;23H[K
+[K[37A[?25h[?25l[1;41r[H[3M[1;43r[39;1H[96m; Available tokens:(B[m[K
+[96m;   %percentage% (default)(B[m[K
+[96m;   %time%(B[m[K[1;41r[H[3M[1;43r[39;1H[96m;   %consumption% (shows current charge rate in watts)(B[m[K
+[38;5;121mlabel-charging(B[m =[95m %percentage%%(B[m[K
+[K[42;54H(B[0;1;7m7,1          12[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tokens:(B[m[K
+[96m;   %percentage% (default)(B[m[K
+[96m;   %time%(B[m[K[42;53H(B[0;1;7m30[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %consumption% (shows current discharge rate in watts)(B[m[K
+[38;5;121mlabel-discharging(B[m =[95m %percentage%%(B[m[K
+[K[42;54H(B[0;1;7m3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tokens:(B[m[K
+[96m;   %percentage% (default)(B[m[K
+[38;5;121mlabel-full(B[m =[95m " Full"(B[m[K[42;54H(B[0;1;7m6[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Only applies if <ramp-capacity> is used(B[m[K
+[38;5;121mramp-capacity-0(B[m =[95m (B[m[41;20H[K[42;54H(B[0;1;7m9,1          13[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mramp-capacity-1(B[m =[95m (B[m[39;20H[K
+[38;5;121mramp-capacity-2(B[m =[95m (B[m[40;20H[K
+[38;5;121mramp-capacity-3(B[m =[95m (B[m[41;20H[K[42;53H(B[0;1;7m42[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mramp-capacity-4(B[m =[95m (B[m[39;20H[K
+[38;5;121mramp-capacity-5(B[m =[95m (B[m[40;20H[K
+[38;5;121mramp-capacity-6(B[m =[95m (B[m[41;20H[K[42;54H(B[0;1;7m5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mramp-capacity-7(B[m =[95m (B[m[39;20H[K
+[38;5;121mramp-capacity-8(B[m =[95m (B[m[40;20H[K
+[38;5;121mramp-capacity-9(B[m =[95m (B[m[41;20H[K[42;54H(B[0;1;7m8,1          14[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Only applies if <bar-capacity> is used(B[m[K
+[96m;bar-capacity-width = 10(B[m[K[42;53H(B[0;1;7m51[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Only applies if <animation-charging> is used(B[m[K
+[38;5;121manimation-charging-0(B[m =[95m (B[m[41;25H[K[42;54H(B[0;1;7m4,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121manimation-charging-1(B[m =[95m (B[m[39;25H[K
+[K
+[96m; Framerate in milliseconds(B[m[K[42;54H(B[0;1;7m7,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121manimation-charging-framerate(B[m =[95m 750(B[m[K
+[K
+[96m; Only applies if <animation-discharging> is used(B[m[K[42;53H(B[0;1;7m60,1          15[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;animation-discharging-0 = ${battery.anim0}(B[m[K
+[96m;;animation-discharging-1 = ${battery.anim1}(B[m[K
+[K[42;54H(B[0;1;7m3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Framerate in milliseconds(B[m[K
+[96m;animation-discharging-framerate = 500(B[m[K
+[K[42;54H(B[0;1;7m6[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[96m;;[module/bspwm](B[m[K[42;54H(B[0;1;7m9,1          16[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;type = internal/bspwm(B[m[K
+[K
+[96m; Only show workspaces defined on the same output as the bar(B[m[K[42;53H(B[0;1;7m72[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; NOTE: The bspwm and XRandR monitor names must match, which they do by default.(B[m[K
+[96m; Default: true(B[m[K[42;54H(B[0;1;7m5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;pin-workspaces = true(B[m[K
+[K
+[96m; Output mode flags after focused state label(B[m[K[42;54H(B[0;1;7m8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Default: false(B[m[K
+[96m;;inline-mode = false(B[m[K
+[K[42;53H(B[0;1;7m81,1          17[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Create click handler used to focus workspace(B[m[K
+[96m; Default: true(B[m[K
+[96m;;enable-click = false(B[m[K[42;54H(B[0;1;7m4[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Create scroll handlers used to cycle workspaces(B[m[K
+[96m; Default: true(B[m[K[42;54H(B[0;1;7m7[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;enable-scroll = false(B[m[K
+[K
+[96m; Set the scroll cycle direction (B[m[K[42;53H(B[0;1;7m90,1          18[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Default: true(B[m[K
+[96m;;reverse-scroll = false(B[m[K
+[K[42;54H(B[0;1;7m3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Use fuzzy (partial) matching on labels when assigning (B[m[K
+[96m; icons to workspaces(B[m[K
+[96m; Example: code;♚ will apply the icon to all workspaces (B[m[K[42;54H(B[0;1;7m6,0-1[H[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m; Only applies if <animation-charging> is used(B[m[K
+[38;5;121manimation-charging-0(B[m =[95m (B[m[2;25H[K
+[38;5;121manimation-charging-1(B[m =[95m (B[m[3;25H[K
+[?25h[?25l[1;41r[H[3L[1;43r[H[96m; Only applies if <bar-capacity> is used(B[m[K
+[96m;bar-capacity-width = 10(B[m[K
+[K
+
+
+
+[?25h[?25l[1;41r[H[3L[1;43r[H[38;5;121mramp-capacity-8(B[m =[95m (B[m[1;20H[K
+[38;5;121mramp-capacity-9(B[m =[95m (B[m[2;20H[K
+[K[42;68H(B[0;1;7m7[1;41r[H(B[m[3L[1;43r[H[38;5;121mramp-capacity-5(B[m =[95m (B[m[1;20H[K
+[38;5;121mramp-capacity-6(B[m =[95m (B[m[2;20H[K
+[38;5;121mramp-capacity-7(B[m =[95m (B[m[3;20H[K[10B[?25h[?25l[1;41r[H[3L[1;43r[H[38;5;121mramp-capacity-2(B[m =[95m (B[m[1;20H[K
+[38;5;121mramp-capacity-3(B[m =[95m (B[m[2;20H[K
+[38;5;121mramp-capacity-4(B[m =[95m (B[m[3;20H[K[13B[?25h[?25l[1;41r[H[3L[1;43r[H[96m; Only applies if <ramp-capacity> is used(B[m[K
+[38;5;121mramp-capacity-0(B[m =[95m (B[m[2;20H[K
+[38;5;121mramp-capacity-1(B[m =[95m (B[m[3;20H[K[42;68H(B[0;1;7m6[23A[?25h[?25l[1;41r[H(B[m[3L[1;43r[H[96m;   %percentage% (default)(B[m[K
+[38;5;121mlabel-full(B[m =[95m " Full"(B[m[K
+[K[19B[?25h[?25l[1;41r[H[3L[1;43r[H[38;5;121mlabel-discharging(B[m =[95m %percentage%%(B[m[K
+[K
+[96m; Available tokens:(B[m[K[22B[?25h[?25l[1;41r[H[3M[1;43r[39;1H[96m; NOTE: The bspwm and XRandR monitor names must match, which they do by default.(B[m[K
+[96m; Default: true(B[m[K[19A[?25h[?25l[1;41r[H[3M[1;43r[39;1H[96m;;pin-workspaces = true(B[m[K
+[K
+[96m; Output mode flags after focused state label(B[m[K[22A[?25h[?25l[1;41r[H[3M[1;43r[39;1H[96m; Default: false(B[m[K
+[96m;;inline-mode = false(B[m[K
+[K[42;68H(B[0;1;7m7[26A[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Create click handler used to focus workspace(B[m[K
+[96m; Default: true(B[m[K
+[96m;;enable-click = false(B[m[K[28A[?25h[?25l[1;41r[H[3M[1;43r[39;1H[K
+[96m; Create scroll handlers used to cycle workspaces(B[m[K
+[96m; Default: true(B[m[K[31A[?25h[?25l[1;41r[H[3M[1;43r[39;1H[96m;;enable-scroll = false(B[m[K
+[K
+[96m; Set the scroll cycle direction (B[m[K[42;68H(B[0;1;7m8[35A[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Default: true(B[m[K
+[96m;;reverse-scroll = false(B[m[K
+[K[37A[?25h[?25l[1;41r[H[3M[1;43r[39;1H[96m; Use fuzzy (partial) matching on labels when assigning (B[m[K
+[96m; icons to workspaces(B[m[K
+[96m; Example: code;♚ will apply the icon to all workspaces (B[m[K[H[?25h[?25l[1;41r[H[3M[1;43r[39;1H[96m; containing 'code' in the label(B[m[K
+[96m; Default: false(B[m[K
+[96m;;fuzzy-match = true(B[m[K[42;54H(B[0;1;7m9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; ws-icon-[0-9]+ = label;icon(B[m[K
+[96m; Note that the label needs to correspond with the bspwm workspace na[41;67H(B[m[94m@@@[42;52H(B[0;1;7m202,1          19[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[38;67H[96m name(B[m[K
+[96m;;ws-icon-0 = code;♚(B[m[K
+[96m;;ws-icon-1 = office;♛(B[m[K[42;54H(B[0;1;7m5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;ws-icon-2 = graphics;♜(B[m[K
+[96m;;ws-icon-3 = mail;♝(B[m[K
+[96m;;ws-icon-4 = web;♞(B[m[K[42;54H(B[0;1;7m8,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;ws-icon-default = ♟(B[m[39;22H[K
+[K
+[96m; Available tags:(B[m[K[42;53H(B[0;1;7m11,0-1        20[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[96m;   <label-monitor>(B[m[K
+[96m;   <label-state> - gets replaced with <label-(focused|urgent|occupied|empty)>(B[m[K
+[96m;   <label-mode> - gets replaced with <label-(monocle|tiled|fullscree[41;67H(B[m[94m@@@[42;54H(B[0;1;7m4,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[38;67H[96mreen|floating|locked|sticky|private)>(B[m[K
+[96m; Default: <label-state>(B[m[K
+[96m;;format = <label-state> <label-mode>(B[m[K[42;54H(B[0;1;7m7[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Available tokens:(B[m[K
+[96m;   %name%(B[m[K[42;53H(B[0;1;7m20,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Default: %name%(B[m[K
+[96m;;label-monitor = %name%(B[m[K
+[K[42;54H(B[0;1;7m3,1          21[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; If any values for label-dimmed-N are defined, the workspace/mode(B[m[K
+[96m; colors will get overridden with those values if the monitor is out of focus(B[m[K[42;54H(B[0;1;7m6[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; To only override workspaces in a specific state, use:(B[m[K
+[96m;   label-dimmed-focused(B[m[K
+[96m;   label-dimmed-occupied(B[m[K[42;54H(B[0;1;7m9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   label-dimmed-urgent(B[m[K
+[96m;   label-dimmed-empty(B[m[K
+[96m;;label-dimmed-foreground = #555(B[m[K[42;53H(B[0;1;7m32,0-1        22[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;label-dimmed-underline = ${bar/top.background}(B[m[K
+[96m;;label-dimmed-focused-background = #f00(B[m[K
+[K[42;54H(B[0;1;7m5,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tokens:(B[m[K
+[96m;   %name%(B[m[K
+[96m;   %icon%(B[m[K[42;54H(B[0;1;7m8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %index%(B[m[K
+[96m; Default: %icon%  %name%(B[m[K
+[96m;;label-focused = %icon%(B[m[K[42;53H(B[0;1;7m41[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[96m;;label-focused-foreground = #ffffff(B[m[K
+[96m;;label-focused-background = #3f3f3f(B[m[K
+[96m;;label-focused-underline = #fba922(B[m[K
+[K[42;54H(B[0;1;7m4,1          23[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tokens:(B[m[K
+[96m;   %name%(B[m[K
+[96m;   %icon%(B[m[K[42;54H(B[0;1;7m7[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %index%(B[m[K
+[96m; Default: %icon%  %name%(B[m[K
+[96m;;label-occupied = %icon%(B[m[K[42;53H(B[0;1;7m50[H[?25h[?25l[1;41r[H(B[m[5M[1;43r[37;1H[96m;;label-occupied-underline = #555555(B[m[K
+[K
+[96m; Available tokens:(B[m[K
+[96m;   %name%(B[m[K
+[96m;   %icon%(B[m[K[42;54H(B[0;1;7m3,1          24[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %index%(B[m[K
+[96m; Default: %icon%  %name%(B[m[K
+[96m;;label-urgent = %icon%(B[m[K[42;54H(B[0;1;7m6[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;label-urgent-foreground = #000000(B[m[K
+[96m;;label-urgent-background = #bd2c40(B[m[K
+[96m;;label-urgent-underline = #9b0a20(B[m[K[42;54H(B[0;1;7m9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Available tokens:(B[m[K
+[96m;   %name%(B[m[K[42;53H(B[0;1;7m62[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[96m;   %icon%(B[m[K
+[96m;   %index%(B[m[K
+[96m; Default: %icon%  %name%(B[m[K
+[96m;;label-empty = %icon%(B[m[K[42;54H(B[0;1;7m5,1          25[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;label-empty-foreground = #55(B[m[K
+[K
+[96m; The following labels will be used to indicate the layout/mode(B[m[K[42;54H(B[0;1;7m8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; for the focused workspace. Requires <label-mode>(B[m[K
+[96m;(B[m[K
+[96m; Available tokens:(B[m[K[42;53H(B[0;1;7m71,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   None(B[m[K
+[96m;label-monocle = (B[m[40;19H[K
+[96m;label-tiled = (B[m[41;17H[K[42;54H(B[0;1;7m4,1          26[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;label-fullscreen = (B[m[39;22H[K
+[96m;label-floating = (B[m[40;20H[K
+[96m;label-pseudotiled = P(B[m[K[42;54H(B[0;1;7m7[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;label-locked = (B[m[39;18H[K
+[96m;label-locked-foreground = #bd2c40(B[m[K
+[96m;label-sticky = (B[m[41;18H[K[42;53H(B[0;1;7m80[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;label-sticky-foreground = #fba922(B[m[K
+[96m;label-private = (B[m[40;19H[K
+[96m;label-private-foreground = #bd2c40(B[m[K[42;54H(B[0;1;7m3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Separator in between workspaces(B[m[K
+[96m;;label-separator = |(B[m[K[42;54H(B[0;1;7m6,1          27[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;label-separator-padding = 2(B[m[K
+[96m;;label-separator-foreground = #ffb52a(B[m[K
+[K[42;54H(B[0;1;7m9,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[38;5;224m[module/cpu](B[m[K[42;53H(B[0;1;7m92,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mtype(B[m =[95m internal/cpu(B[m[K
+[K
+[96m; Seconds to sleep between updates(B[m[K[42;54H(B[0;1;7m5,1          28[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Default: 1(B[m[K
+[38;5;121minterval(B[m =[95m 1(B[m[K
+[K[42;54H(B[0;1;7m8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tags:(B[m[K
+[96m;   <label> (default)(B[m[K
+[96m;   <bar-load>(B[m[K[42;52H(B[0;1;7m301[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <ramp-load>(B[m[K
+[96m;   <ramp-coreload>(B[m[K
+[96m;;format = <label> <ramp-coreload>(B[m[K[42;54H(B[0;1;7m4[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mformat(B[m =[95m <label>(B[m[K
+[38;5;121mformat-prefix(B[m =[95m (B[m[40;18H[K
+[K[42;54H(B[0;1;7m7,0-1        29[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tokens:(B[m[K
+[96m;   %percentage% (default) - total cpu load averaged over all cores(B[m[K
+[96m;   %percentage-sum% - Cumulative load on all cores(B[m[K[42;53H(B[0;1;7m10,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %percentage-cores% - load percentage for each core(B[m[K
+[96m;   %percentage-core[1-9]% - load percentage for specific core(B[m[K
+[38;5;121mlabel(B[m =[95m " %percentage%%"(B[m[K[42;54H(B[0;1;7m3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Spacing between individual per-core ramps(B[m[K
+[96m;;ramp-coreload-spacing = 1(B[m[K[42;54H(B[0;1;7m6,1          30[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;ramp-coreload-0 = ${cpu.load0}(B[m[K
+[96m;;ramp-coreload-1 = ${cpu.load1}(B[m[K
+[K[42;54H(B[0;1;7m9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;ramp-load-0 = ${cpu.load0}(B[m[K
+[96m;;ramp-load-1 = ${cpu.load1}(B[m[K
+[K[42;53H(B[0;1;7m22[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[38;5;224m[module/date](B[m[K[42;54H(B[0;1;7m5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mtype(B[m =[95m internal/date(B[m[K
+[K
+[96m; Seconds to sleep between updates(B[m[K[42;54H(B[0;1;7m8,1          31[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121minterval(B[m =[95m 1.0(B[m[K
+[K
+[96m; See "http://en.cppreference.com/w/cpp/io/manip/put_time" for detail[41;67H(B[m[94m@@@[42;53H(B[0;1;7m31,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[38;67H[96mails on how to format the date string(B[m[K
+[96m; NOTE: if you want to use syntax tags here you need to use %%{...}(B[m[K
+[96m;;date = %Y-%m-%d%(B[m[K[42;54H(B[0;1;7m4[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Optional time format(B[m[K
+[38;5;121mtime(B[m =[95m "[41;10H %I:%M %p"(B[m[K[42;54H(B[0;1;7m7,1          32[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; if `date-alt` or `time-alt` is defined, clicking(B[m[K
+[96m; the module will toggle between formats(B[m[K[42;53H(B[0;1;7m40[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;date-alt = %A, %d %B %Y(B[m[K
+[38;5;121mtime-alt(B[m =[95m "[40;14H %a, %d %b %Y"(B[m[K
+[K[42;54H(B[0;1;7m3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tags:(B[m[K
+[96m;   <label> (default)(B[m[K
+[38;5;121mformat(B[m =[95m <label>(B[m[K[42;54H(B[0;1;7m6[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Available tokens:(B[m[K
+[96m;   %date%(B[m[K[42;54H(B[0;1;7m9,1          33[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %time%(B[m[K
+[96m; Default: %date%(B[m[K
+[38;5;121mlabel(B[m =[95m %time%(B[m[K[42;53H(B[0;1;7m52[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K[42;54H(B[0;1;7m5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;224m[module/filesystem](B[m[K
+[38;5;121mtype(B[m =[95m internal/fs(B[m[K
+[K[42;54H(B[0;1;7m8,1          34[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Mountpoints to display(B[m[K
+[38;5;121mmount-0(B[m =[95m /(B[m[K
+[96m;;mount-1 = /home(B[m[K[42;53H(B[0;1;7m61[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;;mount-2 = /var(B[m[K
+[K
+[96m; Seconds to sleep between updates(B[m[K[42;54H(B[0;1;7m4,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Default: 30(B[m[K
+[38;5;121minterval(B[m =[95m 30(B[m[K
+[K[42;54H(B[0;1;7m7[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Display fixed precision values(B[m[K
+[96m; Default: false(B[m[K
+[38;5;121mfixed-values(B[m =[95m true(B[m[K[42;53H(B[0;1;7m70,0-1        35[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[K
+[96m; Spacing between entries(B[m[K
+[96m; Default: 2(B[m[K
+[96m;;spacing = 4(B[m[K[42;54H(B[0;1;7m3,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Available tags:(B[m[K
+[96m;   <label-mounted> (default)(B[m[K[42;54H(B[0;1;7m6[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <bar-free>(B[m[K
+[96m;   <bar-used>(B[m[K
+[96m;   <ramp-capacity>(B[m[K[42;54H(B[0;1;7m9,1          36[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mformat-mounted(B[m =[95m <label-mounted>(B[m[K
+[38;5;121mformat-mounted-prefix(B[m =[95m (B[m[40;26H[K
+[K[42;53H(B[0;1;7m82,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tags:(B[m[K
+[96m;   <label-unmounted> (default)(B[m[K
+[38;5;121mformat-unmounted(B[m =[95m <label-unmounted>(B[m[K[42;54H(B[0;1;7m5,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mformat-unmounted-prefix(B[m =[95m (B[m[39;28H[K
+[K
+[96m; Available tokens:(B[m[K[42;54H(B[0;1;7m8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %mountpoint%(B[m[K
+[96m;   %type%(B[m[K
+[96m;   %fsname%(B[m[K[42;53H(B[0;1;7m91,1          37[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %percentage_free%(B[m[K
+[96m;   %percentage_used%(B[m[K
+[96m;   %total%(B[m[K[42;54H(B[0;1;7m4,0-1[H[?25h[?25l[43;59H(B[m/         [H[?25h[?25l[42B[J/]112[2 q[?1002l[?1006l[?25h[?25lB[?25h[?25l[1;41r[H[20M[1;43r[22;1H[96m;   %free%(B[m[K
+[96m;   %used%(B[m[K
+[96m; Default: %mountpoint% %percentage_free%%(B[m[K
+[38;5;121mlabel-mounted(B[m =[95m " %free%"(B[m[K
+[K
+[96m; Available tokens:(B[m[K
+[96m;   %mountpoint%(B[m[K
+[96m; Default: %mountpoint% is not mounted(B[m[K
+[38;5;121mlabel-unmounted(B[m =[95m " %mountpoint%: not mounted"(B[m[K
+[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[96m;;[module/github](B[m[K
+[96m;;type = internal/github(B[m[K
+[K
+[96m; Accessing an access token stored in file(B[m[K
+[96m;;token = ${file:/path/to/file/containing/github/access.token}(B[m[K
+[K
+[96m; Accessing an access token stored in an environment variable(B[m[K
+[96m;;token = ${env:GITHU(B[0;7m[96mB(B[m[96m_ACCESS_TOKEN}(B[m[K[42;52H(B[0;1;7m454,22         39[43;3H[?25h[?25l(B[mr[?25h[?25l[2;3H[96mUsed to display the state of random/repeat/repeatone/single[3;3HOnly applies if <icon-[random|repeat|repeatone|single]> is used
+(B[m[38;5;121mtoggle-on-foreground(B[m =[95m ${color.primary}
+(B[m[38;5;121mtoggle-off-foreground(B[m =[95m ${color.secondary}(B[m
+[19X
+[96m; Only applies if <bar-progress> is used
+;;bar-progress-width = 45
+;;bar-progress-indicator = |[10;2H;bar-progress-fill = ─[11;2H;bar-progress-empty = ─(B[m[11;25H[7X
+[36X
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_[15;3HIf you use both a wired and a wireless network, just add 2 module definitions. For example
+(B[m[38;5;224m[module/wired-network]
+(B[m[38;5;121mtype(B[m =[95m internal/network
+(B[m[38;5;121minterface(B[m =[95m eth0(B[m[5X
+[21X[21;3H(B[0;7m[96mBr(B[m[96mightness
+(B[m[38;5;224m[module/brightnessctl]
+(B[m[38;5;121mtype(B[m =[95m custom/script
+(B[m[38;5;121mexec(B[m =[95m ~/.config/polybar/brightnessctl.sh(B[m 
+[38;5;121mformat-prefix(B[m =[95m "(B[m[30m[103mBr(B[m[95mi:"(B[m   
+[38;5;121mformat-prefix-foreground(B[m =[95m ${colors.foreground}
+(B[m[38;5;121mscroll-up(B[m =[95m exec brightnessctl set +5%
+(B[m[38;5;121mscroll-down(B[m =[95m exec brightnessctl set 5%-
+(B[m[38;5;121minterval(B[m =[95m 1(B[m[26X
+[46X
+[38;5;121mlabel(B[m =[95m %output%
+(B[m[38;5;121mlabel-foreground(B[m =[95m ${colors.foreground}(B[m[7X
+
+[17X
+[38;5;224m[module/wireless-network]
+(B[m[38;5;121mtype(B[m =[95m internal/network
+(B[m[38;5;121minterface(B[m =[95m wlp6s0(B[m[24X
+[62X
+[96m; Xwindow
+(B[m[38;5;224m[module/xwindow](B[m[45X
+[38;5;121mtype(B[m =[95m internal/xwindow(B[m[13X[42;52H(B[0;1;7m737,3          68[43;4H[?25h[?25l(B[mi[?25h[?25l[27A[96me[21;5H(B[0;7m[96mi[25;20H(B[m[30m[103mi[43;5H[?25h[?25l[43;1H[?25h[?25l]112[2 q[?1002h[?1006h[?25h[?25l[51C(B[m[1/2][27A[96me[21;3H(B[m[30m[103mBri[?25h[?25l[43;59H(B[m~@k[21;3H[?25h[?25l[43;59H   [42;54H(B[0;1;7m8[22;3H[?25h[?25l[43;59H(B[m~@k[22;3H[?25h[?25l[43;59H   [42;54H(B[0;1;7m9[23;3H[?25h[?25l[43;59H(B[m~@k[23;3H[?25h[?25l[43;59H   [42;53H(B[0;1;7m40[24;3H[?25h[?25l[43;59H(B[m~@k[24;3H[?25h[?25l[43;59H   [42;56H(B[0;1;7m4[24;4H[?25h[?25l[43;59H(B[m~@k[24;4H[?25h[?25l[43;59H   [42;56H(B[0;1;7m5[24;5H[?25h[?25l[43;59H(B[m~@k[24;5H[?25h[?25l[43;59H   [42;56H(B[0;1;7m6[24;6H[?25h[?25l[43;59H(B[m~@k[24;6H[?25h[?25l[43;59H   [42;56H(B[0;1;7m7[24;7H[?25h[?25l[43;59H(B[m~@k[24;7H[?25h[?25l[43;59H   [42;56H(B[0;1;7m8[24;8H[?25h[?25l[43;59H(B[m~@k[24;8H[?25h[?25l[43;59H   [42;56H(B[0;1;7m9[24;9H[?25h[?25l[43;59H(B[m~@k[24;9H[?25h[?25l[43;59H   [42;56H(B[0;1;7m10[24;10H[?25h[?25l[43;59H(B[m~@k[24;10H[?25h[?25l[43;59H   [42;57H(B[0;1;7m1[24;11H[?25h[?25l[43;59H(B[m~@k[24;11H[?25h[?25l[43;59H   [42;57H(B[0;1;7m2[24;12H[?25h[?25l[43;59H(B[m~@k[24;12H[?25h[?25l[43;59H   [42;57H(B[0;1;7m3[24;13H[?25h[?25l[43;59H(B[m~@k[24;13H[?25h[?25l[43;59H   [42;57H(B[0;1;7m4[24;14H[?25h[?25l[43;59H(B[m~@k[24;14H[?25h[?25l[43;59H   [42;57H(B[0;1;7m5[24;15H[?25h[?25l[43;59H(B[m~@k[24;15H[?25h[?25l[43;59H   [42;57H(B[0;1;7m6[24;16H[?25h[?25l[43;59H(B[m~@k[24;16H[?25h[?25l[43;59H   [42;57H(B[0;1;7m7[24;17H[?25h[?25l[43;59H(B[m~@k[24;17H[?25h[?25l[43;59H   [42;57H(B[0;1;7m8[24;18H[?25h[?25l[43;59H(B[m~@k[24;18H[?25h[?25l[43;59H   [42;57H(B[0;1;7m9[24;19H[?25h[?25l[43;59H(B[m~@k[24;19H[?25h[?25l[43;59H   [42;54H(B[0;1;7m1[25;19H[?25h[?25l[43;59H(B[m^M[25;19H[?25h[?25l[43;59H  [42;54H(B[0;1;7m2,1 [16A[?25h[?25l[43;59H(B[m/[17A[?25h[?25l[17B[59X/]112[2 q[?1002l[?1006l[?25h[?25lB[?25h[?25l[H[96m;; ┌[1;5H─[1;6H─[1;7H─[1;8H─[1;9H─[1;10H─[1;11H─[1;12H─[1;13H─[1;14H─[1;15H─[1;16H─[1;17H─[1;18H─[1;19H─[1;20H─[1;21H─[1;22H─[1;23H─[1;24H─[1;25H─[1;26H─[1;27H─[1;28H─[1;29H─[1;30H─[1;31H─[1;32H─[1;33H─[1;34H─[1;35H─[1;36H─[1;37H─[1;38H─[1;39H─[1;40H─[1;41H─[1;42H─[1;43H─[1;44H─[1;45H─[1;46H─[1;47H─[1;48H─[1;49H─[1;50H─[1;51H─[1;52H─[1;53H─[1;54H─[1;55H─[1;56H─[1;57H─[1;58H─[1;59H─[1;60H─[1;61H─[1;62H─[1;63H─[1;64H─[1;65H─[1;66H─[1;67H─[1;68H─[1;69H┐[2;2H; │[2;5H░█[2;7H▀[2;8H█[2;9H░█[2;11H▀[2;12H█[2;13H░█[2;15H░░░█[2;19H░█[2;21H░█[2;23H▀[2;24H▄[2;25H░█[2;27H▀[2;28H█[2;29H░█[2;31H▀[2;32H▄[2;33H░░░░░░░░░█[2;43H▄[2;44H█[2;45H░█[2;47H▀[2;48H█[2;49H░█[2;51H▀[2;52H▄[2;53H░█[2;55H░█[2;57H░█[2;59H░░░█[2;63H▀[2;64H▀[2;65H░█[2;67H▀[2;68H▀[2;69H│[3;2H; │[3;5H░█[3;7H▀[3;8H▀[3;9H░█[3;11H░█[3;13H░█[3;15H░░░░█[3;20H░░█[3;23H▀[3;24H▄[3;25H░█[3;27H▀[3;28H█[3;29H░█[3;31H▀[3;32H▄[3;33H░░░░▀[3;38H░░░░█[3;43H░█[3;45H░█[3;47H░█[3;49H░█[3;51H░█[3;53H░█[3;55H░█[3;57H░█[3;59H░░░█[3;63H▀[3;64H▀[3;65H░▀[3;67H▀[3;68H█[3;69H│[4;1H;; │[4;5H░▀[4;7H░░░▀[4;11H▀[4;12H▀[4;13H░▀[4;15H▀[4;16H▀[4;17H░░▀[4;20H░░▀[4;23H▀[4;24H░░▀[4;27H░▀[4;29H░▀[4;31H░▀[4;33H░░░░▀[4;38H░░░░▀[4;43H░▀[4;45H░▀[4;47H▀[4;48H▀[4;49H░▀[4;51H▀[4;52H░░▀[4;55H▀[4;56H▀[4;57H░▀[4;59H▀[4;60H▀[4;61H░▀[4;63H▀[4;64H▀[4;65H░▀[4;67H▀[4;68H▀[4;69H│[5;1H;; │[5;5H░Created░(B[0;7m[96mB(B[m[96my░Aditya░Shakya░@adi1090x░░░░░░░░░░░░░░░░░░░░░░░░░░░░░│[6;1H;; └[6;5H─[6;6H─[6;7H─[6;8H─[6;9H─[6;10H─[6;11H─[6;12H─[6;13H─[6;14H─[6;15H─[6;16H─[6;17H─[6;18H─[6;19H─[6;20H─[6;21H─[6;22H─[6;23H─[6;24H─[6;25H─[6;26H─[6;27H─[6;28H─[6;29H─[6;30H─[6;31H─[6;32H─[6;33H─[6;34H─[6;35H─[6;36H─[6;37H─[6;38H─[6;39H─[6;40H─[6;41H─[6;42H─[6;43H─[6;44H─[6;45H─[6;46H─[6;47H─[6;48H─[6;49H─[6;50H─[6;51H─[6;52H─[6;53H─[6;54H─[6;55H─[6;56H─[6;57H─[6;58H─[6;59H─[6;60H─[6;61H─[6;62H─[6;63H─[6;64H─[6;65H─[6;66H─[6;67H─[6;68H─[6;69H┘(B[m[7;1H[40X[8;3H[96m _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m
+[28X
+[38;5;224m[module/alsa](B[m[10X
+[38;5;121mtype(B[m =[95m internal/alsa(B[m    [13;2H[96m Soundcard to be used(B[m[24X
+[96m; Usually in the format hw:# where # is the card number[15;3HYou can find the different card numbers in `/proc/asound/cards`(B[m[K
+[38;5;121mmaster-soundcard(B[m =[95m default
+(B[m[38;5;121mspeaker-soundcard(B[m =[95m default
+(B[m[38;5;121mheadphone-soundcard(B[m =[95m default(B[m
+[16X
+[96m; Name of the master, speaker and headphone mixers[21;3HUse the following command to list available mixer controls:
+; $ amixer scontrols | sed -nr "s/.*'([[:alnum:]]+)'.*/\1/p"
+; If master, speaker or headphone-soundcard isn't the default, 
+; use `amixer -c # scontrols` instead where # is the number 
+; of the master, speaker or headphone soundcard respectively
+;(B[m[46X
+[96m; Default: Master(B[m[21X
+[38;5;121mmaster-mixer(B[m =[95m Master(B[m[19X
+[12X
+[96m; Optionally define speaker and headphone mixers
+; Default: none(B[m 
+[96m;;speaker-mixer = Speaker(B[m[14X
+[96m; Default: none
+;;headphone-mixer = Headphone(B[m
+[25X
+[96m; NOTE: This is required if headphone_mixer is defined
+; Use the following command to list available device controls
+; $ amixer controls | sed -r "/CARD/\!d; s/.*=([0-9]+).*name='([^']+)'.*/printf '%3.0f: %s\n' '\1' '\2'/e" | sort
+; You may also need to use `amixer -c # controls` as above for the mixer names(B[m[14X[42;52H(B[0;1;7m5,20-14        Top[43;3H[?25h[?25l(B[mr[?25h[?25l[H[K[2;2H[96m Used to display the state of random/repeat/repeatone/single(B[m[K[3;2H[96m Only applies if <icon-[random|repeat|repeatone|single]> is used(B[m[K
+[38;5;121mtoggle-on-foreground(B[m =[95m ${color.primary}(B[m[K
+[38;5;121mtoggle-off-foreground(B[m =[95m ${color.secondary}(B[m[K
+[K
+[96m; Only applies if <bar-progress> is used[8;3Hbar-progress-width = 45(B[m[21X
+[96m;;bar-progress-indicator = |
+;;bar-progress-fill = ─[11;1H;;bar-progress-empty = ─[13;2H; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m
+[55X[15;3H[96mIf you use both a wired and a wireless network, just add 2 module definitions. For example(B[m   
+[38;5;224m[module/wired-network](B[m[5X
+[38;5;121mtype(B[m =[95m internal/network(B[m[6X
+[38;5;121minterface(B[m =[95m eth0(B[m
+[50X[21;3H(B[0;7m[96mBr(B[m[96mightness(B[m[49X
+[38;5;224m[module/brightnessctl](B[m[38X
+[38;5;121mtype(B[m =[95m custom/script(B[m[43X
+[38;5;121mexec(B[m =[95m ~/.config/polybar/brightnessctl.sh(B[m[19X
+[38;5;121mformat-prefix(B[m =[95m "(B[m[30m[103mBr(B[m[95mi:"(B[m[38X
+[38;5;121mformat-prefix-foreground(B[m =[95m ${colors.foreground}
+(B[m[38;5;121mscroll-up(B[m =[95m exec brightnessctl set +5%
+(B[m[38;5;121mscroll-down(B[m =[95m exec brightnessctl set 5%-
+(B[m[38;5;121minterval(B[m =[95m 1(B[m
+[48X
+[38;5;121mlabel(B[m =[95m %output%
+(B[m[38;5;121mlabel-foreground(B[m =[95m ${colors.foreground}(B[m
+[15X
+[29X
+[38;5;224m[module/wireless-network]
+(B[m[38;5;121mtype(B[m =[95m internal/network(B[m[31X
+[38;5;121minterface(B[m =[95m wlp6s0(B[m[43X
+[K
+[96m; Xwindow(B[m[35X
+[38;5;224m[module/xwindow](B[m[K
+[38;5;121mtype(B[m =[95m internal/xwindow[42;52H(B[0;1;7m737,3          68%[43;4H[?25h[?25l(B[mi[?25h[?25l[27A[96me[21;5H(B[0;7m[96mi[25;20H(B[m[30m[103mi[43;5H[?25h[?25l[43;1H[?25h[?25l]112[2 q[?1002h[?1006h[?25h[?25l(B[m[38;5;224msearch hit BOTTOM, continuing at TOP[43;1H(B[m/Bri                                             W [1/2][27A[96me[21;3H(B[m[30m[103mBri[?25h[?25l[43;59H(B[m^M[21;3H[?25h[?25l[43;59H  [21A[38;5;224m[46m[(B[m[38;5;224mmodule/brightnessctl(B[m[38;5;224m[46m][42;54H(B[0;1;7m8,1[20A[?25h[?25l[43;59H(B[m^M[21A[?25h[?25l[43;59H  [21A[38;5;224m[module/brightnessctl][42;54H(B[0;1;7m9[19A[?25h[?25l[42;53H41,21[25;21H[?25h[?25l]112[2 q[?25h[?25l[43;59H(B[m1[27A[96me[25;21H[?25h[?25l[18B(B[0;1m-- VISUAL --(B[m[37C[10X[37D[?25h[?25l[46C1[25;21H[?25h[?25l[43;59Ho[25;21H[?25h[?25l[43;59H1[25;21H[?25h[?25l[43;59Hi[25;21H[?25h[?25l[43;60H~@k[25;21H[?25h[?25l[43;59H1   [25;21H[?25h[?25l[43;59H~@k[25;21H[?25h[?25l[43;59H2  [25;21H[95m[48;5;242m:[42;57H(B[0;1;7m2[25;22H[?25h[?25l[43;59H(B[m~@k[25;22H[?25h[?25l[43;59H3  [25;22H[95m[48;5;242m"[42;57H(B[0;1;7m3[25;23H[?25h[?25l[43;59H(B[m^[[25;23H[?25h[?25l[43;59H  [25;21H[95m:"(B[m[18B[12X[42;57H(B[0;1;7m2]112[2 q[25;22H[?25h[?25l[43;59H(B[mi[25;22H[?25h[?25l[43;59H ]112[6 q[25;22H[?25h[?25l[18B(B[0;1m-- INSERT --[?25h[?25l[25;22H[?25h[?25l[42;57H(B[0;1;7m1[25;21H[?25h[?25l[42;57H0[25;20H[?25h[?25l[42;57H1[25;21H[?25h[?25l[42;57H0[25;20H[?25h[?25l[42;56H19[25;19H[?25h[?25l[42;57H8[25;18H[?25h[?25l(B[m[18B[12X]112[2 q[25;18H[?25h[?25l[42;57H(B[0;1;7m7[25;17H[?25h[?25l[43;59H(B[m:[25;17H[?25h[?25l[43;59H [43;1H:]112[2 q[?1002l[?1006l[?25h[?25ls[?25h[?25le[?25h[?25lt[?25h[?25l[C[?25h[?25lp[?25h[?25la[?25h[?25ls[?25h[?25le[?25h[?25l [?25h[?25l[?25h[?25lt[?25h[?25le[?25h[?25l[43;1H[?25h[?25l[27A[96me(B[0;1;7m[42;52H                  ]112[2 q[?1002h[?1006h[25;17H[?25h[?25l[C(B[m[95m[25;19H(B[m[30m[103mBri(B[m[95m:"[42;40H(B[0;1;7m[+][?25h[?25l[25;18H[?25h[?25l[43;59H(B[m~@k[25;18H[?25h[?25l[43;59H   [25;19H[?25h[?25l[43;59H~@k[25;19H[?25h[?25l[43;59H   [25;20H[?25h[?25l[43;59H~@k[25;20H[?25h[?25l[43;59H   [25;21H[?25h[?25l[43;59H~@k[25;21H[?25h[?25l[43;59H   [25;22H[?25h[?25l[43;59H~@k[25;22H[?25h[?25l[43;59H   [25;23H[?25h[?25l[43;59H~@k[25;23H[?25h[?25l[43;59H   [25;22H[?25h[?25l[43;59H~@k[25;22H[?25h[?25l[43;59H   [25;21H[?25h[?25l[43;59H~@k[25;21H[?25h[?25l[43;59H   [25;20H[?25h[?25l[43;59H~@k[25;20H[?25h[?25l[43;59H   [25;21H[?25h[?25l[43;59H~@k[25;21H[?25h[?25l[43;59H   [25;22H[?25h[?25l[43;59H~@k[25;22H[?25h[?25l[43;59H   [25;23H[?25h[?25l[43;59Hi[25;23H[?25h[?25l[43;59H ]112[6 q[25;23H[?25h[?25l[18B(B[0;1m-- INSERT (paste) --[?25h[?25l[25;23H[?25h[?25l(B[m[95m"(B[m [?25h[?25l[95mBr"(B[m [?25h[?25l[95m"(B[m [?25h[?25l[95m"(B[m [?25h[?25l[95m "[?25h[?25l(B[m[18B[20X]112[2 q[25;20H[?25h[?25l[?25h[?25l[43;59H:[25;19H[?25h[?25l[43;59H [43;1H:]112[2 q[?1002l[?1006l[?25h[?25lw[?25h[?25lq[?25h[?25l[43;1H[?25h[?25l"~/.config/polybar/material/modules.ini"]112[2 q[?1002h[?1006h[?25h[?25l[43;1H<nfig/polybar/material/modules.ini" 1087L, 26715B written[43;1H[?25h[?25l]112[2 q[?1002l[?1006l(B[m[?25h[?1l>[>4;0m[?1049l[23;0;0t[23;0t[?2004l[?1004l[?25h[?2004h[jayasurya@JayasuryaMarasani scripts]$ nvim ~/.config/polybar/material/modules.ini
+[?2004l[?1049h[22;0;0t[22;0t[?1h=[H[2J]11;?[?2004h[?u[c[?25h[?25l(B[m[H[2J[>4;2m[96m;; ┌[1;5H─[1;6H─[1;7H─[1;8H─[1;9H─[1;10H─[1;11H─[1;12H─[1;13H─[1;14H─[1;15H─[1;16H─[1;17H─[1;18H─[1;19H─[1;20H─[1;21H─[1;22H─[1;23H─[1;24H─[1;25H─[1;26H─[1;27H─[1;28H─[1;29H─[1;30H─[1;31H─[1;32H─[1;33H─[1;34H─[1;35H─[1;36H─[1;37H─[1;38H─[1;39H─[1;40H─[1;41H─[1;42H─[1;43H─[1;44H─[1;45H─[1;46H─[1;47H─[1;48H─[1;49H─[1;50H─[1;51H─[1;52H─[1;53H─[1;54H─[1;55H─[1;56H─[1;57H─[1;58H─[1;59H─[1;60H─[1;61H─[1;62H─[1;63H─[1;64H─[1;65H─[1;66H─[1;67H─[1;68H─[1;69H┐[2;1H;; │[2;5H░█[2;7H▀[2;8H█[2;9H░█[2;11H▀[2;12H█[2;13H░█[2;15H░░░█[2;19H░█[2;21H░█[2;23H▀[2;24H▄[2;25H░█[2;27H▀[2;28H█[2;29H░█[2;31H▀[2;32H▄[2;33H░░░░░░░░░█[2;43H▄[2;44H█[2;45H░█[2;47H▀[2;48H█[2;49H░█[2;51H▀[2;52H▄[2;53H░█[2;55H░█[2;57H░█[2;59H░░░█[2;63H▀[2;64H▀[2;65H░█[2;67H▀[2;68H▀[2;69H│[3;1H;; │[3;5H░█[3;7H▀[3;8H▀[3;9H░█[3;11H░█[3;13H░█[3;15H░░░░█[3;20H░░█[3;23H▀[3;24H▄[3;25H░█[3;27H▀[3;28H█[3;29H░█[3;31H▀[3;32H▄[3;33H░░░░▀[3;38H░░░░█[3;43H░█[3;45H░█[3;47H░█[3;49H░█[3;51H░█[3;53H░█[3;55H░█[3;57H░█[3;59H░░░█[3;63H▀[3;64H▀[3;65H░▀[3;67H▀[3;68H█[3;69H│[4;1H;; │[4;5H░▀[4;7H░░░▀[4;11H▀[4;12H▀[4;13H░▀[4;15H▀[4;16H▀[4;17H░░▀[4;20H░░▀[4;23H▀[4;24H░░▀[4;27H░▀[4;29H░▀[4;31H░▀[4;33H░░░░▀[4;38H░░░░▀[4;43H░▀[4;45H░▀[4;47H▀[4;48H▀[4;49H░▀[4;51H▀[4;52H░░▀[4;55H▀[4;56H▀[4;57H░▀[4;59H▀[4;60H▀[4;61H░▀[4;63H▀[4;64H▀[4;65H░▀[4;67H▀[4;68H▀[4;69H│[5;1H;; │[5;5H░Created░By░Aditya░Shakya░@adi1090x░░░░░░░░░░░░░░░░░░░░░░░░░░░░░│[6;1H;; └[6;5H─[6;6H─[6;7H─[6;8H─[6;9H─[6;10H─[6;11H─[6;12H─[6;13H─[6;14H─[6;15H─[6;16H─[6;17H─[6;18H─[6;19H─[6;20H─[6;21H─[6;22H─[6;23H─[6;24H─[6;25H─[6;26H─[6;27H─[6;28H─[6;29H─[6;30H─[6;31H─[6;32H─[6;33H─[6;34H─[6;35H─[6;36H─[6;37H─[6;38H─[6;39H─[6;40H─[6;41H─[6;42H─[6;43H─[6;44H─[6;45H─[6;46H─[6;47H─[6;48H─[6;49H─[6;50H─[6;51H─[6;52H─[6;53H─[6;54H─[6;55H─[6;56H─[6;57H─[6;58H─[6;59H─[6;60H─[6;61H─[6;62H─[6;63H─[6;64H─[6;65H─[6;66H─[6;67H─[6;68H─[6;69H┘(B[m[7;1H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[38;5;224m[module/alsa](B[m[K
+[38;5;121mtype(B[m =[95m internal/alsa(B[m[K
+[K
+[96m; Soundcard to be used(B[m[K
+[96m; Usually in the format hw:# where # is the card number(B[m[K
+[96m; You can find the different card numbers in `/proc/asound/cards`(B[m[K
+[38;5;121mmaster-soundcard(B[m =[95m default(B[m[K
+[38;5;121mspeaker-soundcard(B[m =[95m default(B[m[K
+[38;5;121mheadphone-soundcard(B[m =[95m default(B[m[K
+[K
+[96m; Name of the master, speaker and headphone mixers(B[m[K
+[96m; Use the following command to list available mixer controls:(B[m[K
+[96m; $ amixer scontrols | sed -nr "s/.*'([[:alnum:]]+)'.*/\1/p"(B[m[K
+[96m; If master, speaker or headphone-soundcard isn't the default, (B[m[K
+[96m; use `amixer -c # scontrols` instead where # is the number (B[m[K
+[96m; of the master, speaker or headphone soundcard respectively(B[m[K
+[96m;(B[m[K
+[96m; Default: Master(B[m[K
+[38;5;121mmaster-mixer(B[m =[95m Master(B[m[K
+[K
+[96m; Optionally define speaker and headphone mixers(B[m[K
+[96m; Default: none(B[m[K
+[96m;;speaker-mixer = Speaker(B[m[K
+[96m; Default: none(B[m[K
+[96m;;headphone-mixer = Headphone(B[m[K
+[K
+[96m; NOTE: This is required if headphone_mixer is defined(B[m[K
+[96m; Use the following command to list available device controls(B[m[K
+[96m; $ amixer controls | sed -r "/CARD/\!d; s/.*=([0-9]+).*name='([^']+)'.*/printf '%3.0f: %s\n' '\1' '\2'/e" | sort(B[m[K
+[96m; You may also need to use `amixer -c # controls` as above for the mixer names(B[m[K
+(B[0;1;7m~/.config/polybar/material/modules.ini             1,1            Top]112[2 q]112[2 q[?1002h[?1006h[H[?25h[?25l[?1004h[?25h[?25l[43;59H(B[m/         [H[?25h[?25l[42B[J/]112[2 q[?1002l[?1006l[?25h[?25lB[?25h[?25l[5;14H(B[0;7m[96mB[34B(B[m[96m'
+
+x[42;52H(B[0;1;7m5,20-14[43;3H[?25h[?25l(B[mr[?25h[?25l[H[K[2;2H[96m Used to display the state of random/repeat/repeatone/single(B[m[K[3;2H[96m Only applies if <icon-[random|repeat|repeatone|single]> is used(B[m[K
+[38;5;121mtoggle-on-foreground(B[m =[95m ${color.primary}(B[m[K
+[38;5;121mtoggle-off-foreground(B[m =[95m ${color.secondary}(B[m[K
+[K
+[96m; Only applies if <bar-progress> is used[8;3Hbar-progress-width = 45(B[m[21X
+[96m;;bar-progress-indicator = |
+;;bar-progress-fill = ─[11;1H;;bar-progress-empty = ─[13;2H; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m
+[55X[15;3H[96mIf you use both a wired and a wireless network, just add 2 module definitions. For example(B[m   
+[38;5;224m[module/wired-network](B[m[5X
+[38;5;121mtype(B[m =[95m internal/network(B[m[6X
+[38;5;121minterface(B[m =[95m eth0(B[m
+[50X[21;3H(B[0;7m[96mBr(B[m[96mightness(B[m[49X
+[38;5;224m[module/brightnessctl](B[m[38X
+[38;5;121mtype(B[m =[95m custom/script(B[m[43X
+[38;5;121mexec(B[m =[95m ~/.config/polybar/brightnessctl.sh(B[m[19X
+[38;5;121mformat-prefix(B[m =[95m "[25;19H "(B[m[40X
+[38;5;121mformat-prefix-foreground(B[m =[95m ${colors.foreground}
+(B[m[38;5;121mscroll-up(B[m =[95m exec brightnessctl set +5%
+(B[m[38;5;121mscroll-down(B[m =[95m exec brightnessctl set 5%-
+(B[m[38;5;121minterval(B[m =[95m 1(B[m
+[48X
+[38;5;121mlabel(B[m =[95m %output%
+(B[m[38;5;121mlabel-foreground(B[m =[95m ${colors.foreground}(B[m
+[15X
+[29X
+[38;5;224m[module/wireless-network]
+(B[m[38;5;121mtype(B[m =[95m internal/network(B[m[31X
+[38;5;121minterface(B[m =[95m wlp6s0(B[m[43X
+[K
+[96m; Xwindow(B[m[35X
+[38;5;224m[module/xwindow](B[m[K
+[38;5;121mtype(B[m =[95m internal/xwindow[42;52H(B[0;1;7m737,3          68%[43;4H[?25h[?25l(B[mi[?25h[?25l[27A[96me[21;5H(B[0;7m[96mi[43;5H[?25h[?25l(B[m[43;1H    [H[96m;; ┌[1;5H─[1;6H─[1;7H─[1;8H─[1;9H─[1;10H─[1;11H─[1;12H─[1;13H─[1;14H─[1;15H─[1;16H─[1;17H─[1;18H─[1;19H─[1;20H─[1;21H─[1;22H─[1;23H─[1;24H─[1;25H─[1;26H─[1;27H─[1;28H─[1;29H─[1;30H─[1;31H─[1;32H─[1;33H─[1;34H─[1;35H─[1;36H─[1;37H─[1;38H─[1;39H─[1;40H─[1;41H─[1;42H─[1;43H─[1;44H─[1;45H─[1;46H─[1;47H─[1;48H─[1;49H─[1;50H─[1;51H─[1;52H─[1;53H─[1;54H─[1;55H─[1;56H─[1;57H─[1;58H─[1;59H─[1;60H─[1;61H─[1;62H─[1;63H─[1;64H─[1;65H─[1;66H─[1;67H─[1;68H─[1;69H┐[2;2H; │[2;5H░█[2;7H▀[2;8H█[2;9H░█[2;11H▀[2;12H█[2;13H░█[2;15H░░░█[2;19H░█[2;21H░█[2;23H▀[2;24H▄[2;25H░█[2;27H▀[2;28H█[2;29H░█[2;31H▀[2;32H▄[2;33H░░░░░░░░░█[2;43H▄[2;44H█[2;45H░█[2;47H▀[2;48H█[2;49H░█[2;51H▀[2;52H▄[2;53H░█[2;55H░█[2;57H░█[2;59H░░░█[2;63H▀[2;64H▀[2;65H░█[2;67H▀[2;68H▀[2;69H│[3;2H; │[3;5H░█[3;7H▀[3;8H▀[3;9H░█[3;11H░█[3;13H░█[3;15H░░░░█[3;20H░░█[3;23H▀[3;24H▄[3;25H░█[3;27H▀[3;28H█[3;29H░█[3;31H▀[3;32H▄[3;33H░░░░▀[3;38H░░░░█[3;43H░█[3;45H░█[3;47H░█[3;49H░█[3;51H░█[3;53H░█[3;55H░█[3;57H░█[3;59H░░░█[3;63H▀[3;64H▀[3;65H░▀[3;67H▀[3;68H█[3;69H│[4;1H;; │[4;5H░▀[4;7H░░░▀[4;11H▀[4;12H▀[4;13H░▀[4;15H▀[4;16H▀[4;17H░░▀[4;20H░░▀[4;23H▀[4;24H░░▀[4;27H░▀[4;29H░▀[4;31H░▀[4;33H░░░░▀[4;38H░░░░▀[4;43H░▀[4;45H░▀[4;47H▀[4;48H▀[4;49H░▀[4;51H▀[4;52H░░▀[4;55H▀[4;56H▀[4;57H░▀[4;59H▀[4;60H▀[4;61H░▀[4;63H▀[4;64H▀[4;65H░▀[4;67H▀[4;68H▀[4;69H│[5;1H;; │[5;5H░Created░By░Aditya░Shakya░@adi1090x░░░░░░░░░░░░░░░░░░░░░░░░░░░░░│[6;1H;; └[6;5H─[6;6H─[6;7H─[6;8H─[6;9H─[6;10H─[6;11H─[6;12H─[6;13H─[6;14H─[6;15H─[6;16H─[6;17H─[6;18H─[6;19H─[6;20H─[6;21H─[6;22H─[6;23H─[6;24H─[6;25H─[6;26H─[6;27H─[6;28H─[6;29H─[6;30H─[6;31H─[6;32H─[6;33H─[6;34H─[6;35H─[6;36H─[6;37H─[6;38H─[6;39H─[6;40H─[6;41H─[6;42H─[6;43H─[6;44H─[6;45H─[6;46H─[6;47H─[6;48H─[6;49H─[6;50H─[6;51H─[6;52H─[6;53H─[6;54H─[6;55H─[6;56H─[6;57H─[6;58H─[6;59H─[6;60H─[6;61H─[6;62H─[6;63H─[6;64H─[6;65H─[6;66H─[6;67H─[6;68H─[6;69H┘(B[m[7;1H[40X[8;3H[96m _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m
+[28X
+[38;5;224m[module/alsa](B[m[10X
+[38;5;121mtype(B[m =[95m internal/alsa(B[m    [13;2H[96m Soundcard to be used(B[m[24X
+[96m; Usually in the format hw:# where # is the card number[15;3HYou can find the different card numbers in `/proc/asound/cards`(B[m[K
+[38;5;121mmaster-soundcard(B[m =[95m default
+(B[m[38;5;121mspeaker-soundcard(B[m =[95m default
+(B[m[38;5;121mheadphone-soundcard(B[m =[95m default(B[m
+[16X
+[96m; Name of the master, speaker and headphone mixers[21;3HUse the following command to list available mixer controls:
+; $ amixer scontrols | sed -nr "s/.*'([[:alnum:]]+)'.*/\1/p"
+; If master, speaker or headphone-soundcard isn't the default, 
+; use `amixer -c # scontrols` instead where # is the number 
+; of the master, speaker or headphone soundcard respectively
+;(B[m[46X
+[96m; Default: Master(B[m[21X
+[38;5;121mmaster-mixer(B[m =[95m Master(B[m[19X
+[12X
+[96m; Optionally define speaker and headphone mixers
+; Default: none(B[m 
+[96m;;speaker-mixer = Speaker(B[m[14X
+[96m; Default: none
+;;headphone-mixer = Headphone(B[m
+[25X
+[96m; NOTE: This is required if headphone_mixer is defined
+; Use the following command to list available device controls
+; $ amixer controls | sed -r "/CARD/\!d; s/.*=([0-9]+).*name='([^']+)'.*/printf '%3.0f: %s\n' '\1' '\2'/e" | sort
+; You may also need to use `amixer -c # controls` as above for the mixer names(B[m[14X[42;52H(B[0;1;7m1,1            Top]112[2 q[?1002h[?1006h[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Default: none(B[m[K
+[96m;;headphone-id = 9(B[m[K
+[K[42;52H(B[0;1;7m4,1             0%[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Use volume mapping (similar to amixer -M and alsamixer), where the increase in volume is linear to the ear(B[m[K
+[96m; Default: false(B[m[K[42;52H(B[0;1;7m7,0-1[1;41r[H(B[m[3M[1;43r[H[38;5;224m[46m[(B[m[38;5;224mmodule/alsa(B[m[38;5;224m[46m][38B(B[m[96m;;mapped = true(B[m[K
+[K
+[96m; Interval for volume increase/decrease (in percent points)(B[m[K[42;52H(B[0;1;7m10,1 [1;41r[H(B[m[3M[1;43r[39;1H[96m; Default: 5(B[m[K
+[38;5;121minterval(B[m =[95m 1(B[m[K
+[K[42;53H(B[0;1;7m3,1            1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tags:(B[m[K
+[96m;   <label-volume> (default)(B[m[K
+[96m;   <ramp-volume>(B[m[K[42;53H(B[0;1;7m6[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <bar-volume>(B[m[K
+[38;5;121mformat-volume(B[m =[95m <ramp-volume> <label-volume>(B[m[K
+[K[42;53H(B[0;1;7m9,0-1[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tags:(B[m[K
+[96m;   <label-muted> (default)(B[m[K
+[96m;   <ramp-volume>(B[m[K[42;52H(B[0;1;7m22,1            2[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <bar-volume>(B[m[K
+[38;5;121mformat-muted(B[m =[95m <label-muted>(B[m[K
+[38;5;121mformat-muted-prefix(B[m =[95m (B[m[41;24H[K[42;53H(B[0;1;7m5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Available tokens:(B[m[K
+[96m;   %percentage% (default)(B[m[K[42;53H(B[0;1;7m8[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mlabel-volume(B[m =[95m %percentage%%(B[m[K
+[K
+[96m; Available tokens:(B[m[K[42;52H(B[0;1;7m31[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %percentage% (default(B[m[K
+[38;5;121mlabel-muted(B[m =[95m " Muted"(B[m[K
+[38;5;121mlabel-muted-foreground(B[m =[95m ${color.foreground-alt}(B[m[K[42;53H(B[0;1;7m4,1            3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Only applies if <ramp-volume> is used(B[m[K
+[38;5;121mramp-volume-0(B[m =[95m (B[m[41;18H[K[42;53H(B[0;1;7m7[1;41r[H(B[m[5M[1;43r[37;1H[38;5;121mramp-volume-1(B[m =[95m (B[m[37;18H[K
+[38;5;121mramp-volume-2(B[m =[95m (B[m[38;18H[K
+[K
+[96m; If defined, it will replace <ramp-volume> when(B[m[K
+[96m; headphones are plugged in to `headphone_control_numid`(B[m[K[42;52H(B[0;1;7m40[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; If undefined, <ramp-volume> will be used for both(B[m[K
+[96m; Only applies if <ramp-volume> is used(B[m[K
+[38;5;121mramp-headphones-0(B[m =[95m (B[m[41;22H[K[42;53H(B[0;1;7m3,1            4[H[?25h[?25l[1;41r[H(B[m[4M[1;43r[38;1H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K
+[38;5;224m[module/backlight](B[m[K[42;53H(B[0;1;7m6,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;type = internal/xbacklight(B[m[K
+[38;5;121mtype(B[m =[95m internal/backlight(B[m[K
+[K[42;53H(B[0;1;7m9,1  [1;41r[H(B[m[3M[1;43r[39;1H[96m; Use the following command to list available cards:(B[m[K
+[96m; $ ls -1 /sys/class/backlight/(B[m[K
+[96m;card = intel_backlight(B[m[K[42;52H(B[0;1;7m52[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mcard(B[m =[95m amdgpu_bl1(B[m[K
+[K
+[96m; Available tags:(B[m[K[42;53H(B[0;1;7m5,1            5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <label> (default)(B[m[K
+[96m;   <ramp>(B[m[K
+[96m;   <bar>(B[m[K[42;53H(B[0;1;7m8[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mformat(B[m =[95m <ramp> <label>(B[m[K
+[K
+[96m; Available tokens:(B[m[K[42;52H(B[0;1;7m61[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %percentage% (default)(B[m[K
+[38;5;121mlabel(B[m =[95m %percentage%%(B[m[K
+[K[42;53H(B[0;1;7m4,1            6[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Only applies if <ramp> is used(B[m[K
+[38;5;121mramp-0(B[m =[95m (B[m[40;11H[K
+[38;5;121mramp-1(B[m =[95m (B[m[41;11H[K[42;53H(B[0;1;7m7,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mramp-2(B[m =[95m (B[m[39;11H[K
+[38;5;121mramp-3(B[m =[95m (B[m[40;11H[K
+[38;5;121mramp-4(B[m =[95m (B[m[41;11H[K[42;52H(B[0;1;7m70,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[K
+[K[42;53H(B[0;1;7m3[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;224m[module/battery](B[m[K
+[38;5;121mtype(B[m =[95m internal/battery(B[m[K
+[K[42;53H(B[0;1;7m6,1            7[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; This is useful in case the battery never reports 100% charge(B[m[K
+[38;5;121mfull-at(B[m =[95m 100(B[m[K
+[K[42;53H(B[0;1;7m9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Use the following command to list batteries and adapters:(B[m[K
+[96m; $ ls -1 /sys/class/power_supply/(B[m[K
+[38;5;121mbattery(B[m =[95m BAT0(B[m[K[42;52H(B[0;1;7m82[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121madapter(B[m =[95m AC(B[m[K
+[K
+[96m; If an inotify event haven't been reported in this many(B[m[K[42;53H(B[0;1;7m5,0-1          8[1;41r[H(B[m[3M[1;43r[39;1H[96m; seconds, manually poll for new values.(B[m[K
+[96m;(B[m[K
+[96m; Needed as a fallback for systems that don't report events(B[m[K[42;53H(B[0;1;7m8,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; on sysfs/procfs.(B[m[K
+[96m;(B[m[K
+[96m; Disable polling by setting the interval to 0.(B[m[K[42;52H(B[0;1;7m91[1;41r[H(B[m[3M[1;43r[39;1H[96m;(B[m[K
+[96m; Default: 5(B[m[K
+[38;5;121mpoll-interval(B[m =[95m 2(B[m[K[42;53H(B[0;1;7m4,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; see "man date" for details on how to format the time string(B[m[K
+[96m; NOTE: if you want to use syntax tags here you need to use %%{...}(B[m[K[42;53H(B[0;1;7m7,1            9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Default: %H:%M:%S(B[m[K
+[38;5;121mtime-format(B[m =[95m %H:%M(B[m[K
+[K[42;52H(B[0;1;7m100,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tags:(B[m[K
+[96m;   <label-charging> (default)(B[m[K
+[96m;   <bar-capacity>(B[m[K[42;54H(B[0;1;7m3,1  [H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <ramp-capacity>(B[m[K
+[96m;   <animation-charging>(B[m[K
+[38;5;121mformat-charging(B[m =[95m <animation-charging> <label-charging>(B[m[K[42;54H(B[0;1;7m6,1          10[1;41r[H(B[m[3M[1;43r[39;1H[K
+[96m; Available tags:(B[m[K
+[96m;   <label-discharging> (default)(B[m[K[42;54H(B[0;1;7m9[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <bar-capacity>(B[m[K
+[96m;   <ramp-capacity>(B[m[K
+[96m;   <animation-discharging>(B[m[K[42;53H(B[0;1;7m12[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mformat-discharging(B[m =[95m <ramp-capacity> <label-discharging>(B[m[K
+[K
+[96m; Available tags:(B[m[K[42;54H(B[0;1;7m5[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   <label-full> (default)(B[m[K
+[96m;   <bar-capacity>(B[m[K
+[96m;   <ramp-capacity>(B[m[K[42;54H(B[0;1;7m8,1          11[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[38;5;121mformat-full(B[m =[95m <label-full>(B[m[K
+[38;5;121mformat-full-prefix(B[m =[95m (B[m[40;23H[K
+[K[42;53H(B[0;1;7m21[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tokens:(B[m[K
+[96m;   %percentage% (default)(B[m[K
+[96m;   %time%(B[m[K[42;54H(B[0;1;7m4,0-1[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m;   %consumption% (shows current charge rate in watts)(B[m[K
+[38;5;121mlabel-charging(B[m =[95m %percentage%%(B[m[K
+[K[42;54H(B[0;1;7m7,1          12[H[?25h[?25l[1;41r[H(B[m[3M[1;43r[39;1H[96m; Available tokens:(B[m[K
+[96m;   %percentage% (default)(B[m[K
+[96m;   %time%(B[m[K[42;53H(B[0;1;7m30[H[?25h[?25l[43;59H(B[m/[H[?25h[?25l[43;59H [43;1H/]112[2 q[?1002l[?1006l[?25h[?25lB[?25h[?25l[1;2H[96m;ramp-load-1 = ${cpu.load1}(B[m
+[47X[3;2H[96m; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m
+[12X
+[38;5;224m[module/date](B[m    
+[38;5;121mtype(B[m =[95m internal/date(B[m
+[61X[8;3H[96mSeconds to sleep between updates(B[m[33X
+[38;5;121minterval(B[m =[95m 1.0(B[m[5X
+[19X
+[96m; See "http://en.cppreference.com/w/cpp/io/manip/put_time" for details on how to format the date string[13;3HNOTE: if you want to use syntax tags here you need to use %%{...}[14;2H;date = %Y-%m-%d%(B[m
+[19X[16;3H[96mOptional time format(B[m  
+[38;5;121mtime(B[m =[95m "[17;10H %I:%M %p"(B[m[36X[19;3H[96mif `date-alt` or `time-alt` is defined, clicking[20;3Hthe module will toggle between formats[21;2H;date-alt = %A, %d %(B[0;7m[96mB(B[m[96m %Y
+(B[m[38;5;121mtime-alt(B[m =[95m "[22;14H %a, %d %b %Y"(B[m
+[27X
+[96m; Available tags:(B[m[39X
+[96m;   <label> (default)
+(B[m[38;5;121mformat(B[m =[95m <label>(B[m 
+[26X[28;3H[96mAvailable tokens:[29;5H%date%(B[m[9X
+[96m;   %time%(B[m[16X
+[96m; Default: %date%(B[m[5X
+[38;5;121mlabel(B[m =[95m %time%(B[m
+[19X[34;2H[96m; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m
+[10X
+[38;5;224m[module/filesystem](B[m[35X
+[38;5;121mtype(B[m =[95m internal/fs(B[m[12X[39;3H[96mMountpoints to display
+(B[m[38;5;121mmount-0(B[m =[95m /(B[m[15X[41;2H[96m;mount-1 = /home[42;52H(B[0;1;7m380,22         34[43;3H[?25h[?25l(B[mr[?25h[?25l[H[28X
+[96m; Used to display the state of random/repeat/repeatone/single[3;2H Only applies if <icon-[random|repeat|repeatone|single]> is used
+(B[m[38;5;121mtoggle-on-foreground(B[m =[95m ${color.primary}
+(B[m[38;5;121mtoggle-off-foreground(B[m =[95m ${color.secondary}(B[m
+[20X
+[96m; Only applies if <bar-progress> is used[8;2H;bar-progress-width = 45(B[m[9X
+[96m;;bar-progress-indicator = |
+;;bar-progress-fill = ─[11;2H;bar-progress-empty = ─(B[m[11;25H[K
+[34X[13;2H[96m; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_(B[m[21X
+[18X
+[96m; If you use both a wired and a wireless network, just add 2 module definitions. For example
+(B[m[38;5;224m[module/wired-network]
+(B[m[38;5;121mtype(B[m =[95m internal/network
+(B[m[38;5;121minterface(B[m =[95m eth0(B[m[34X
+[40X[21;2H[96m (B[0;7m[96mBr(B[m[96mightness(B[m[13X
+[38;5;224m[module/brightnessctl](B[m[5X
+[38;5;121mtype(B[m =[95m custom/script
+(B[m[38;5;121mexec(B[m =[95m ~/.config/polybar/brightnessctl.sh
+(B[m[38;5;121mformat-prefix(B[m =[95m "[25;19H "(B[m [26;7H[38;5;121m-prefix-foreground(B[m =[95m ${colors.foreground}
+(B[m[38;5;121mscroll-up(B[m =[95m exec brightnessctl set +5%
+(B[m[38;5;121mscroll-down(B[m =[95m exec brightnessctl set 5%-
+(B[m[38;5;121minterval(B[m =[95m 1(B[m
+[10X
+[38;5;121mlabel(B[m =[95m %output%(B[m [32;6H[38;5;121m-foreground(B[m =[95m ${colors.foreground}(B[m
+
+[46X
+[38;5;224m[module/wireless-network]
+(B[m[38;5;121mtype(B[m =[95m internal/network
+(B[m[38;5;121minterface(B[m =[95m wlp6s0[39;3H(B[m[96mXwindow(B[m[15X
+[38;5;224m[module/xwindow]
+(B[m[38;5;121mtype(B[m =[95m internal/xwindow[42;52H(B[0;1;7m737,3          68[43;4H[?25h[?25l(B[mi[?25h[?25l[27A[96me[21;5H(B[0;7m[96mi[43;5H[?25h[?25l[43;1H[?25h[?25l]112[2 q[?1002h[?1006h[?25h[?25l[51C(B[m[1/1][27A[96me[21;3H(B[m[30m[103mBri[?25h[?25l[42;53H(B[0;1;7m41,21-19[25;19H[?25h[?25l[43;59H(B[mi[25;19H[?25h[?25l[43;59H ]112[6 q[25;19H[?25h[?25l[18B(B[0;1m-- INSERT --(B[m[39C[5X[39D[?25h[?25l[25;19H[?25h[?25l[95m "(B[m [42;40H(B[0;1;7m[+][13C18   [25;18H[?25h[?25l(B[m[95m "(B[m [42;57H(B[0;1;7m7[25;17H[?25h[?25l(B[m[95m" "[42;57H(B[0;1;7m8[25;18H[?25h[?25l(B[m[95mB "[42;57H(B[0;1;7m9[25;19H[?25h[?25l(B[m[95mr "[42;56H(B[0;1;7m20[25;20H[?25h[?25l(B[m[30m[103mBri(B[m[95m "[42;57H(B[0;1;7m1[25;21H[?25h[?25l(B[m[95m: "[42;57H(B[0;1;7m2[25;22H[?25h[?25l(B[m[95m"(B[m [?25h[?25l[18B[12X]112[2 q[25;22H[?25h[?25l[42;57H(B[0;1;7m1[25;21H[?25h[?25l[43;59H(B[m:[25;21H[?25h[?25l[43;59H [43;1H:]112[2 q[?1002l[?1006l[?25h[?25lw[?25h[?25lq[?25h[?25l[43;1H[?25h[?25l"~/.config/polybar/material/modules.ini"]112[2 q[?1002h[?1006h[?25h[?25l[43;1H<nfig/polybar/material/modules.ini" 1087L, 26715B written[43;1H[?25h[?25l]112[2 q[?1002l[?1006l(B[m[?25h[?1l>[>4;0m[?1049l[23;0;0t[23;0t[?2004l[?1004l[?25h[?2004h[jayasurya@JayasuryaMarasani scripts]$ exit
+[?2004lexit
+
+Script done on 2023-01-16 04:38:49+05:30 [COMMAND_EXIT_CODE="0"]

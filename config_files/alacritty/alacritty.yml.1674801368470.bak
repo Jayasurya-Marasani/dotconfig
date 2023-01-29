@@ -1,0 +1,70 @@
+window:
+  padding:
+    x: 5
+    y: 5
+  class:
+    instance: Alacritty
+    general: Alacritty
+  opacity: 0.95
+
+scrolling:
+  history: 10000
+  multiplier: 3
+
+font:
+  normal:
+    family: Liga SFMono Nerd Font
+    style: Bold
+  bold:
+    family: Liga SFMono Nerd Font
+    style: Bold
+  italic:
+    family: Liga SFMono Nerd Font
+    style: MediumItalic
+  bold_italic:
+    family: Liga SFMono Nerd Font
+    style: BoldItalic
+  size: 10
+draw_bold_text_with_bright_colors: true
+
+colors:
+  name: 3024 (dark)
+  author: Chris Kempson
+  primary:
+    background: "#090300"
+    foreground: "#a5a2a2"
+  cursor:
+    text: "#090300"
+    cursor: "#a5a2a2"
+  normal:
+    black: "#090300"
+    red: "#db2d20"
+    green: "#01a252"
+    yellow: "#fded02"
+    blue: "#01a0e4"
+    magenta: "#a16a94"
+    cyan: "#b5e4f4"
+    white: "#a5a2a2"
+  bright:
+    black: "#5c5855"
+    red: "#db2d20"
+    green: "#01a252"
+    yellow: "#fded02"
+    blue: "#01a0e4"
+    magenta: "#a16a94"
+    cyan: "#b5e4f4"
+    white: "#f7f7f7"
+
+selection:
+  save_to_clipboard: false
+
+shell:
+  program: /usr/bin/bash
+
+key_bindings:
+  - {
+      key: Return,
+      mods: Super|Shift,
+      action: SpawnNewInstance
+    }
+theme: 3024.dark

@@ -1,0 +1,70 @@
+window:
+  padding:
+    x: 5
+    y: 5
+  class:
+    instance: Alacritty
+    general: Alacritty
+  opacity: 0.95
+
+scrolling:
+  history: 10000
+  multiplier: 3
+
+font:
+  normal:
+    family: Liga SFMono Nerd Font
+    style: Bold
+  bold:
+    family: Liga SFMono Nerd Font
+    style: Bold
+  italic:
+    family: Liga SFMono Nerd Font
+    style: MediumItalic
+  bold_italic:
+    family: Liga SFMono Nerd Font
+    style: BoldItalic
+  size: 10
+draw_bold_text_with_bright_colors: true
+
+colors:
+  name: Greenscreen (dark)
+  author: Chris Kempson
+  primary:
+    background: "#001100"
+    foreground: "#00bb00"
+  cursor:
+    text: "#001100"
+    cursor: "#00bb00"
+  normal:
+    black: "#001100"
+    red: "#007700"
+    green: "#00bb00"
+    yellow: "#007700"
+    blue: "#009900"
+    magenta: "#00bb00"
+    cyan: "#005500"
+    white: "#00bb00"
+  bright:
+    black: "#007700"
+    red: "#007700"
+    green: "#00bb00"
+    yellow: "#007700"
+    blue: "#009900"
+    magenta: "#00bb00"
+    cyan: "#005500"
+    white: "#00ff00"
+
+selection:
+  save_to_clipboard: false
+
+shell:
+  program: /usr/bin/bash
+
+key_bindings:
+  - {
+      key: Return,
+      mods: Super|Shift,
+      action: SpawnNewInstance
+    }
+theme: Greenscreen.dark

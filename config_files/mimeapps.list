@@ -1,0 +1,12 @@
+[Default Applications]
+font/ttf=Alacritty.desktop
+image/jpeg=firefox.desktop
+text/html=brave-browser.desktop
+x-scheme-handler/http=brave-browser.desktop
+x-scheme-handler/https=brave-browser.desktop
+x-scheme-handler/about=brave-browser.desktop
+x-scheme-handler/unknown=brave-browser.desktop
+
+[Added Associations]
+font/ttf=Alacritty.desktop;
+image/jpeg=firefox.desktop;
